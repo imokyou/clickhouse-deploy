@@ -1,0 +1,83 @@
+<clickhouse>
+    <timezone>UTC</timezone>
+    <!-- Logging -->
+    <logger>
+        <level>information</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+        <size>1000M</size>
+        <count>10</count>
+        <console>0</console>
+    </logger>
+
+    <!-- Networking / Ports -->
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <max_connections>4096</max_connections>
+    <keep_alive_timeout>3</keep_alive_timeout>
+
+    <!-- Concurrency limits (4-core CPU) -->
+    <max_concurrent_queries>10</max_concurrent_queries>
+
+    <!-- Memory and caches (16GB total) -->
+    <max_server_memory_usage>12884901888</max_server_memory_usage> <!-- 12GB -->
+    <uncompressed_cache_size>6442450944</uncompressed_cache_size>  <!-- 6GB -->
+    <mark_cache_size>3221225472</mark_cache_size>                 <!-- 3GB -->
+
+    <!-- MergeTree tuning (150GB NVMe) -->
+    <merge_tree>
+        <parts_to_delay_insert>150</parts_to_delay_insert>
+        <parts_to_throw_insert>300</parts_to_throw_insert>
+        <max_bytes_to_merge_at_max_space_in_pool>107374182400</max_bytes_to_merge_at_max_space_in_pool> <!-- 100GB -->
+        <max_bytes_to_merge_at_min_space_in_pool>53687091200</max_bytes_to_merge_at_min_space_in_pool>  <!-- 50GB -->
+        <index_granularity>8192</index_granularity>
+        <index_granularity_bytes>0</index_granularity_bytes>
+        <min_bytes_for_wide_part>0</min_bytes_for_wide_part>
+        <min_rows_for_wide_part>0</min_rows_for_wide_part>
+    </merge_tree>
+
+    <!-- System logs -->
+    <query_log>
+        <database>system</database>
+        <table>query_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </query_log>
+
+    <query_thread_log>
+        <database>system</database>
+        <table>query_thread_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </query_thread_log>
+
+    <text_log>
+        <database>system</database>
+        <table>text_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </text_log>
+
+    <trace_log>
+        <database>system</database>
+        <table>trace_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </trace_log>
+
+    <metric_log>
+        <database>system</database>
+        <table>metric_log</table>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </metric_log>
+
+    <asynchronous_metric_log>
+        <database>system</database>
+        <table>asynchronous_metric_log</table>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </asynchronous_metric_log>
+
+    <remote_servers /> 
+    
+</clickhouse>

@@ -1,0 +1,122 @@
+clickhouse:
+  profiles:
+    default:
+      max_memory_usage: 10737418240  # 10GB (16GB * 0.625)
+      max_memory_usage_for_user: 8589934592  # 8GB (16GB * 0.5)
+      max_concurrent_queries: 10  # 根据4核CPU调整
+      max_threads: 4  # 根据CPU核心数调整
+      max_insert_threads: 4
+      max_connections: 4096
+      keep_alive_timeout: 3
+      max_concurrent_queries_for_user: 5  # 根据4核CPU调整
+      max_memory_usage_for_all_queries: 10066329600  # 9.375GB (16GB * 0.585)
+      # 查询超时设置
+      max_execution_time: 300  # 5分钟
+      max_query_size: 100000000  # 100MB
+      # 结果集限制
+      max_result_rows: 1000000
+      max_result_bytes: 1000000000  # 1GB
+      # 读取限制
+      max_read_rows: 100000000
+      max_read_bytes: 1000000000  # 1GB
+
+    readonly:
+      max_memory_usage: 5368709120  # 5GB (16GB * 0.3125)
+      max_memory_usage_for_user: 4294967296  # 4GB (16GB * 0.25)
+      max_concurrent_queries: 5  # 根据4核CPU调整
+      max_threads: 2
+      max_insert_threads: 0  # 只读用户不允许插入
+      max_connections: 2048
+      keep_alive_timeout: 3
+      max_concurrent_queries_for_user: 2  # 根据4核CPU调整
+      # 查询超时设置
+      max_execution_time: 600  # 10分钟
+      max_query_size: 50000000  # 50MB
+      # 结果集限制
+      max_result_rows: 500000
+      max_result_bytes: 500000000  # 500MB
+      # 读取限制
+      max_read_rows: 50000000
+      max_read_bytes: 500000000  # 500MB
+
+  users:
+    default:
+      password: "StrongPassword123!"  # 使用强密码
+      networks:
+        ip: "::/0"  # 生产环境建议限制为特定IP段
+      profile: default
+      quota: default
+      access_management: 1
+      # 权限设置
+      grants:
+        - "GRANT SELECT, INSERT, CREATE, DROP, ALTER, DELETE ON *.* TO default"
+    
+    admin:
+      password: "AdminStrongPassword456!"  # 使用强密码
+      networks:
+        ip: "::/0"  # 生产环境建议限制为特定IP段
+      profile: default
+      quota: admin_quota
+      access_management: 1
+      # 管理员权限
+      grants:
+        - "GRANT ALL ON *.* TO admin WITH GRANT OPTION"
+    
+    readonly:
+      password: "ReadOnlyPassword789!"  # 使用强密码
+      networks:
+        ip: "::/0"  # 生产环境建议限制为特定IP段
+      profile: readonly
+      quota: readonly_quota
+      access_management: 0  # 只读用户不需要访问管理权限
+      # 只读权限
+      grants:
+        - "GRANT SELECT ON *.* TO readonly"
+
+    appuser:
+      # TODO: 替换为 password_sha256_hex，参考官方文档
+      password: "ChangeMe_123!"
+      networks:
+        ip: "::/0"  # 生产环境请收窄
+      profile: default
+      quota: default
+      access_management: 0
+      grants:
+        - "GRANT SELECT, INSERT, CREATE, ALTER, DROP, DELETE ON *.*"
+
+  quotas:
+    default:
+      interval:
+        duration: 3600  # 1小时
+        queries: 0  # 无限制
+        errors: 0  # 无限制
+        result_rows: 0  # 无限制
+        read_rows: 0  # 无限制
+        execution_time: 0  # 无限制
+        # 内存限制 - 根据16GB内存调整
+        max_memory_usage: 10737418240  # 10GB (16GB * 0.625)
+        max_memory_usage_for_user: 8589934592  # 8GB (16GB * 0.5)
+    
+    admin_quota:
+      interval:
+        duration: 3600  # 1小时
+        queries: 0  # 无限制
+        errors: 0  # 无限制
+        result_rows: 0  # 无限制
+        read_rows: 0  # 无限制
+        execution_time: 0  # 无限制
+        # 内存限制 - 根据16GB内存调整
+        max_memory_usage: 12884901888  # 12GB (16GB * 0.75)
+        max_memory_usage_for_user: 10737418240  # 10GB (16GB * 0.625)
+    
+    readonly_quota:
+      interval:
+        duration: 3600  # 1小时
+        queries: 1000  # 每小时1000次查询
+        errors: 100  # 每小时100次错误
+        result_rows: 10000000  # 1000万行结果
+        read_rows: 100000000  # 1亿行读取
+        execution_time: 3600  # 1小时总执行时间
+        # 内存限制 - 根据16GB内存调整
+        max_memory_usage: 5368709120  # 5GB (16GB * 0.3125)
+        max_memory_usage_for_user: 4294967296  # 4GB (16GB * 0.25) 

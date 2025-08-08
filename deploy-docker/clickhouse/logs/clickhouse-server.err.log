@@ -1,0 +1,1275 @@
+2025.08.08 10:04:03.933306 [ 82 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:04:04.584070 [ 82 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:04:04.611147 [ 82 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:14.749601 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:15.055736 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:15.092952 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:16.422226 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:16.671666 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:16.700023 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:17.953731 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:18.205216 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:18.232546 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:19.528721 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:19.778131 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:19.813871 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:21.471597 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:21.723357 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:21.750209 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:24.232965 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:24.481216 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:24.514546 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:28.571962 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:28.815147 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:28.841266 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:36.111929 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:36.360524 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:36.385811 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:50.074403 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:06:50.320193 [ 1 ] {} <Error> Application: Caught exception while setting up access control.: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:06:50.348736 [ 1 ] {} <Error> Application: Code: 347. DB::Exception: Code: 115. DB::Exception: Setting access_management is neither a builtin setting nor started with the prefix 'SQL_' registered for user-defined settings: while parsing profile 'default' in users configuration file: while loading configuration file '/etc/clickhouse-server/users.xml'. (UNKNOWN_SETTING), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::Exception::Exception<String, String>(int, FormatStringHelperImpl<std::type_identity<String>::type, std::type_identity<String>::type>, String&&, String&&) @ 0x0000000009d9756b
+3. DB::AccessControl::CustomSettingsPrefixes::checkSettingNameIsAllowed(std::basic_string_view<char, std::char_traits<char>>) const @ 0x0000000012a0f378
+4. DB::(anonymous namespace)::parseSettingsProfile(Poco::Util::AbstractConfiguration const&, String const&, std::unordered_set<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>, std::hash<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::equal_to<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>, std::allocator<StrongTypedef<wide::integer<128ul, unsigned int>, DB::UUIDTag>>> const&, DB::AccessControl const&) @ 0x0000000012b4cbc4
+5. DB::UsersConfigAccessStorage::parseFromConfig(Poco::Util::AbstractConfiguration const&) @ 0x0000000012b3e0dc
+6. void std::__function::__policy_invoker<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&)::$_0, void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>>(std::__function::__policy_storage const*, Poco::AutoPtr<Poco::Util::AbstractConfiguration>&&, bool) @ 0x0000000012b50a50
+7. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eab336
+8. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+9. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+10. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+11. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+12. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+13. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+14. Poco::Util::Application::run() @ 0x0000000018d37a86
+15. DB::Server::run() @ 0x000000000ff1c710
+16. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+17. main @ 0x0000000009d9352d
+18. ? @ 0x0000000000029d90
+19. ? @ 0x0000000000029e40
+20. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build)). (CANNOT_LOAD_CONFIG), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage const&, int) @ 0x000000000fc7e42c
+2. std::__unique_if<DB::Exception>::__unique_single std::make_unique[abi:ne190107]<DB::Exception, PreformattedMessage const&, int const&>(PreformattedMessage const&, int const&) @ 0x0000000015eae324
+3. DB::ConfigReloader::reloadIfNewer(bool, bool, bool, bool) @ 0x0000000015eac000
+4. DB::ConfigReloader::ConfigReloader(std::basic_string_view<char, std::char_traits<char>>, std::vector<String, std::allocator<String>> const&, String const&, zkutil::ZooKeeperNodeCache&&, std::shared_ptr<Poco::Event> const&, std::function<void (Poco::AutoPtr<Poco::Util::AbstractConfiguration>, bool)>&&) @ 0x0000000015ea9aad
+5. DB::UsersConfigAccessStorage::load(String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012b430f1
+6. DB::AccessControl::addUsersConfigStorage(String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&, bool) @ 0x0000000012a08af0
+7. DB::AccessControl::addStoragesFromUserDirectoriesConfig(Poco::Util::AbstractConfiguration const&, String const&, String const&, String const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a0c5f3
+8. DB::AccessControl::setupFromMainConfig(Poco::Util::AbstractConfiguration const&, String const&, std::function<std::shared_ptr<zkutil::ZooKeeper> ()> const&) @ 0x0000000012a06f19
+9. DB::Server::main(std::vector<String, std::allocator<String>> const&) @ 0x000000000ff31960
+10. Poco::Util::Application::run() @ 0x0000000018d37a86
+11. DB::Server::run() @ 0x000000000ff1c710
+12. mainEntryClickHouseServer(int, char**) @ 0x000000000ff196f3
+13. main @ 0x0000000009d9352d
+14. ? @ 0x0000000000029d90
+15. ? @ 0x0000000000029e40
+16. _start @ 0x0000000006b4602e
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:16.733889 [ 1 ] {} <Warning> Context: Effective user of the process (clickhouse) does not match the owner of the data (1000).
+2025.08.08 10:07:16.977525 [ 1 ] {} <Warning> Access(local_directory): File /var/lib/clickhouse/access/users.list doesn't exist
+2025.08.08 10:07:16.977741 [ 1 ] {} <Warning> Access(local_directory): Recovering lists in directory /var/lib/clickhouse/access/
+2025.08.08 10:07:16.993703 [ 1 ] {} <Warning> Context: Linux is not using a fast clock source. Performance can be degraded. Check /sys/devices/system/clocksource/clocksource0/current_clocksource
+2025.08.08 10:07:16.994987 [ 1 ] {} <Warning> Context: Delay accounting is not enabled, OSIOWaitMicroseconds will not be gathered. You can enable it using `echo 1 > /proc/sys/kernel/task_delayacct` or by using sysctl.
+2025.08.08 10:07:24.747396 [ 726 ] {} <Error> void DB::SystemLog<DB::AsynchronousMetricLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::AsynchronousMetricLogElement]: Failed to flush system log system.asynchronous_metric_log with 3372 entries up to offset 3372: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/88e/88e537b8-cd74-4682-a8da-b80923ef1559/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::AsynchronousMetricLogElement>::savingThreadFunction() @ 0x0000000013f4edcc
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::AsynchronousMetricLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::AsynchronousMetricLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9afc3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:24.850094 [ 719 ] {} <Error> void DB::SystemLog<DB::TraceLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::TraceLogElement]: Failed to flush system log system.trace_log with 2 entries up to offset 2: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/16e/16eb373b-6f74-4d9d-82a3-b6b35219baaf/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::TraceLogElement>::savingThreadFunction() @ 0x0000000013f80dcc
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::TraceLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::TraceLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9c0c3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:24.858809 [ 729 ] {} <Error> void DB::SystemLog<DB::ProcessorProfileLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::ProcessorProfileLogElement]: Failed to flush system log system.processors_profile_log with 6 entries up to offset 6: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/7e2/7e2832c0-f6ad-4c9e-92ce-b8c50d95c014/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::ProcessorProfileLogElement>::savingThreadFunction() @ 0x0000000013f9367b
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::ProcessorProfileLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::ProcessorProfileLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9c723
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:24.881835 [ 724 ] {} <Error> void DB::SystemLog<DB::LatencyLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::LatencyLogElement]: Failed to flush system log system.latency_log with 8 entries up to offset 8: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/2d9/2d9cb0b9-71e4-400a-b837-3f7eaf13eba6/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::LatencyLogElement>::savingThreadFunction() @ 0x000000001406546c
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::LatencyLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::LatencyLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9e0a3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:24.917712 [ 721 ] {} <Error> void DB::SystemLog<DB::TextLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::TextLogElement]: Failed to flush system log system.text_log with 58 entries up to offset 58: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/81e/81efeee4-ca85-4b99-be73-64c89448dacb/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::TextLogElement>::savingThreadFunction() @ 0x0000000013f99ffb
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::TextLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::TextLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9c943
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:25.240596 [ 717 ] {} <Error> void DB::SystemLog<DB::QueryLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::QueryLogElement]: Failed to flush system log system.query_log with 2 entries up to offset 2: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/7a1/7a1c601f-39ac-4186-9a8a-fa2949f7c9c5/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::QueryLogElement>::savingThreadFunction() @ 0x0000000013f680bb
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::QueryLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::QueryLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9b843
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:27.765408 [ 726 ] {} <Error> void DB::SystemLog<DB::AsynchronousMetricLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::AsynchronousMetricLogElement]: Failed to flush system log system.asynchronous_metric_log with 1398 entries up to offset 4770: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/88e/88e537b8-cd74-4682-a8da-b80923ef1559/tmp_insert_202508_2_2_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::AsynchronousMetricLogElement>::savingThreadFunction() @ 0x0000000013f4edcc
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::AsynchronousMetricLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::AsynchronousMetricLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9afc3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:27.852747 [ 723 ] {} <Error> void DB::SystemLog<DB::ErrorLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::ErrorLogElement]: Failed to flush system log system.error_log with 2 entries up to offset 2: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/c83/c8391728-ed66-473e-b495-f7de82ed9520/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::ErrorLogElement>::savingThreadFunction() @ 0x000000001406b9e3
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::ErrorLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::ErrorLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9da43
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:27.886344 [ 724 ] {} <Error> void DB::SystemLog<DB::LatencyLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::LatencyLogElement]: Failed to flush system log system.latency_log with 3 entries up to offset 11: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/2d9/2d9cb0b9-71e4-400a-b837-3f7eaf13eba6/tmp_insert_202508_2_2_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::LatencyLogElement>::savingThreadFunction() @ 0x000000001406546c
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::LatencyLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::LatencyLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9e0a3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:27.901290 [ 721 ] {} <Error> void DB::SystemLog<DB::TextLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::TextLogElement]: Failed to flush system log system.text_log with 12 entries up to offset 70: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/81e/81efeee4-ca85-4b99-be73-64c89448dacb/tmp_insert_202508_2_2_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::TextLogElement>::savingThreadFunction() @ 0x0000000013f99ffb
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::TextLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::TextLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9c943
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:27.961913 [ 719 ] {} <Error> void DB::SystemLog<DB::TraceLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::TraceLogElement]: Failed to flush system log system.trace_log with 1651 entries up to offset 1653: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/16e/16eb373b-6f74-4d9d-82a3-b6b35219baaf/tmp_insert_202508_2_2_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::TraceLogElement>::savingThreadFunction() @ 0x0000000013f80dcc
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::TraceLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::TraceLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9c0c3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:31.669846 [ 722 ] {} <Error> void DB::SystemLog<DB::MetricLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::MetricLogElement]: Failed to flush system log system.metric_log with 8 entries up to offset 8: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/7a4/7a4e2071-64f5-4509-be31-4d0b02de57f7/tmp_insert_202508_1_1_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::MetricLogElement>::savingThreadFunction() @ 0x0000000014057fcc
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::MetricLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::MetricLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9dc63
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:35.408706 [ 723 ] {} <Error> void DB::SystemLog<DB::ErrorLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::ErrorLogElement]: Failed to flush system log system.error_log with 2 entries up to offset 4: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/c83/c8391728-ed66-473e-b495-f7de82ed9520/tmp_insert_202508_2_2_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::ErrorLogElement>::savingThreadFunction() @ 0x000000001406b9e3
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::ErrorLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::ErrorLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9da43
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:35.513379 [ 724 ] {} <Error> void DB::SystemLog<DB::LatencyLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::LatencyLogElement]: Failed to flush system log system.latency_log with 8 entries up to offset 19: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/2d9/2d9cb0b9-71e4-400a-b837-3f7eaf13eba6/tmp_insert_202508_3_3_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::LatencyLogElement>::savingThreadFunction() @ 0x000000001406546c
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::LatencyLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::LatencyLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9e0a3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:35.545628 [ 721 ] {} <Error> void DB::SystemLog<DB::TextLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::TextLogElement]: Failed to flush system log system.text_log with 6 entries up to offset 76: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/81e/81efeee4-ca85-4b99-be73-64c89448dacb/tmp_insert_202508_3_3_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::TextLogElement>::savingThreadFunction() @ 0x0000000013f99ffb
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::TextLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::TextLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9c943
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))
+2025.08.08 10:07:35.625973 [ 719 ] {} <Error> void DB::SystemLog<DB::TraceLogElement>::flushImpl(const std::vector<LogElement> &, uint64_t) [LogElement = DB::TraceLogElement]: Failed to flush system log system.trace_log with 900 entries up to offset 2553: Code: 481. DB::ErrnoException: Cannot set modification time to file: /var/lib/clickhouse/store/16e/16eb373b-6f74-4d9d-82a3-b6b35219baaf/tmp_insert_202508_3_3_0/: , errno: 1, strerror: Operation not permitted. (PATH_ACCESS_DENIED), Stack trace (when copying this message, always include the lines below):
+
+0. DB::Exception::Exception(DB::Exception::MessageMasked&&, int, bool) @ 0x000000000fbf941b
+1. DB::Exception::Exception(PreformattedMessage&&, int) @ 0x0000000009d97a8c
+2. DB::ErrnoException::ErrnoException<String const&>(int, int, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca855d
+3. void DB::ErrnoException::throwFromPath<String const&>(int, String const&, FormatStringHelperImpl<std::type_identity<String const&>::type>, String const&) @ 0x000000000fca81c4
+4. DB::DiskLocal::setLastModified(String const&, Poco::Timestamp const&) @ 0x0000000013307706
+5. DB::DataPartStorageOnDiskBase::rename(String, String, std::shared_ptr<Poco::Logger>, bool, bool) @ 0x0000000014d7d7ec
+6. DB::IMergeTreeDataPart::renameTo(String const&, bool) @ 0x0000000014db961b
+7. DB::MergeTreeData::preparePartForCommit(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, bool, bool) @ 0x0000000014ea0ee2
+8. DB::MergeTreeData::renameTempPartAndReplaceImpl(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, std::vector<std::shared_ptr<DB::IMergeTreeDataPart const>, std::allocator<std::shared_ptr<DB::IMergeTreeDataPart const>>>*, bool) @ 0x0000000014ed91d7
+9. DB::MergeTreeData::renameTempPartAndAdd(std::shared_ptr<DB::IMergeTreeDataPart>&, DB::MergeTreeData::Transaction&, DB::DataPartsLock&, bool) @ 0x0000000014eda268
+10. DB::MergeTreeSink::finishDelayedChunk() @ 0x00000000152b536a
+11. DB::runStep(std::function<void ()>, std::shared_ptr<DB::ThreadGroup>&) @ 0x0000000015907403
+12. DB::ExceptionKeepingTransform::work() @ 0x0000000015906e5f
+13. DB::ExecutionThreadContext::executeTask() @ 0x000000001566c5c2
+14. DB::PipelineExecutor::executeStepImpl(unsigned long, std::atomic<bool>*) @ 0x00000000156600c5
+15. DB::PipelineExecutor::executeStep(std::atomic<bool>*) @ 0x000000001565f492
+16. DB::SystemLog<DB::TraceLogElement>::savingThreadFunction() @ 0x0000000013f80dcc
+17. void std::__function::__policy_invoker<void ()>::__call_impl[abi:ne190107]<std::__function::__default_alloc_func<ThreadFromGlobalPoolImpl<true, true>::ThreadFromGlobalPoolImpl<DB::SystemLogBase<DB::TraceLogElement>::startup()::'lambda'()>(DB::SystemLogBase<DB::TraceLogElement>::startup()::'lambda'()&&)::'lambda'(), void ()>>(std::__function::__policy_storage const*) @ 0x000000000fd9c0c3
+18. ThreadPoolImpl<std::thread>::ThreadFromThreadPool::worker() @ 0x000000000fd3d992
+19. void* std::__thread_proxy[abi:ne190107]<std::tuple<std::unique_ptr<std::__thread_struct, std::default_delete<std::__thread_struct>>, void (ThreadPoolImpl<std::thread>::ThreadFromThreadPool::*)(), ThreadPoolImpl<std::thread>::ThreadFromThreadPool*>>(void*) @ 0x000000000fd44e5a
+20. ? @ 0x0000000000094ac3
+21. ? @ 0x0000000000125a04
+ (version 25.6.8.10 (official build))

@@ -1,0 +1,37 @@
+<clickhouse>
+    <users>
+        <default>
+            <access_management>1</access_management>
+            <max_threads>4</max_threads>
+            <max_insert_threads>4</max_insert_threads>
+            <max_concurrent_queries>10</max_concurrent_queries>
+            <max_memory_usage>12884901888</max_memory_usage>
+            <max_memory_usage_for_user>12884901888</max_memory_usage_for_user>
+            <max_memory_usage_for_all_queries>12884901888</max_memory_usage_for_all_queries>
+            <max_memory_usage_for_user_for_all_queries>12884901888</max_memory_usage_for_user_for_all_queries>
+
+            <!-- Timeouts -->
+            <connect_timeout>10</connect_timeout>
+            <receive_timeout>300</receive_timeout>
+            <send_timeout>300</send_timeout>
+
+            <!-- Async inserts -->
+            <async_insert>1</async_insert>
+            <async_insert_threads>4</async_insert_threads>
+        </default>
+
+        <!-- New application user -->
+        <appuser>
+            <password>ChangeMe_123!</password>
+            <networks>
+                <!-- Restrict in production: e.g. 10.0.0.0/8 or specific IPs -->
+                <ip>::/0</ip>
+            </networks>
+            <!-- Use default profile/quotas; optional to customize -->
+            <grants>
+                <!-- Per docs, do not specify grantee here -->
+                <query>GRANT SELECT, INSERT, CREATE, ALTER, DROP, DELETE ON *.*</query>
+            </grants>
+        </appuser>
+    </users>
+</clickhouse>
