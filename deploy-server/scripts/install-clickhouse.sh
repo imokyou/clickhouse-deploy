@@ -88,7 +88,7 @@ install_clickhouse() {
     case "$OS_NAME" in
         "rhel"|"centos"|"rocky"|"alma"|"fedora")
             if command -v dnf &> /dev/null; then
-                dnf install -y clickhouse-server clickhouse-client
+                dnf install -y clickhouse-server clickhouse-client 
             else
                 yum install -y clickhouse-server clickhouse-client
             fi

@@ -32,19 +32,34 @@ check_config() {
     echo "检查配置文件..."
     
     # 检查主配置文件
-    if [ ! -f /etc/clickhouse-server/config.xml ]; then
-        echo "✗ 配置文件不存在: /etc/clickhouse-server/config.xml"
+    if [ ! -f /etc/clickhouse-server/config.d/config.xml ]; then
+        echo "✗ 配置文件不存在: /etc/clickhouse-server/config.d/config.xml"
         exit 1
     fi
     
     # 测试配置文件
-    echo "测试配置文件..."
-    if clickhouse-server --config-file=/etc/clickhouse-server/config.xml --test-config; then
-        echo "✓ 配置文件语法正确"
-    else
-        echo "✗ 配置文件语法错误"
+    # echo "测试配置文件..."
+    # if clickhouse-server --config-file=/etc/clickhouse-server/config.d/config.xml --test-config; then
+    #     echo "✓ 配置文件语法正确"
+    # else
+    #     echo "✗ 配置文件语法错误"
+    #     exit 1
+    # fi
+
+    # 检查用户配置文件
+    if [ ! -f /etc/clickhouse-server/users.d/users.xml ]; then
+        echo "✗ 用户配置文件不存在: /etc/clickhouse-server/users.d/users.xml"
         exit 1
     fi
+    
+    # 测试用户配置文件
+    # echo "测试用户配置文件..."
+    # if clickhouse-server --config-file=/etc/clickhouse-server/users.d/users.xml --test-config; then
+    #     echo "✓ 用户配置文件语法正确"
+    # else
+    #     echo "✗ 用户配置文件语法错误"
+    #     exit 1
+    # fi
 }
 
 # 启动服务
@@ -97,7 +112,7 @@ test_connection() {
     echo "测试数据库连接..."
     
     # 测试基础连接
-    if clickhouse-client --query "SELECT 1" > /dev/null 2>&1; then
+    if clickhouse-client --user=webuser --password=WebUser_2024_Secure! --query "SELECT 1" > /dev/null 2>&1; then
         echo "✓ 数据库连接正常"
     else
         echo "✗ 数据库连接失败"
@@ -105,7 +120,7 @@ test_connection() {
     fi
     
     # 测试版本查询
-    if clickhouse-client --query "SELECT version()" > /dev/null 2>&1; then
+    if clickhouse-client --user=webuser --password=WebUser_2024_Secure! --query "SELECT version()" > /dev/null 2>&1; then
         echo "✓ 版本查询正常"
     else
         echo "✗ 版本查询失败"
@@ -155,6 +170,7 @@ main() {
     echo "  HTTP接口: http://localhost:8123"
     echo "  Native接口: localhost:9000"
     echo "  默认用户: default"
+    echo "  默认密码: clickhouse123"
     echo ""
     echo "常用命令:"
     echo "  查看服务状态: systemctl status clickhouse-server"

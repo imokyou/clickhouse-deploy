@@ -1,0 +1,22 @@
+# ClickHouse Server 健康检查配置文件
+# 复制此文件为 health-check.conf 并修改相应配置
+
+# 日志配置
+LOG_FILE="/opt/clickhouse/logs/health-check.log"
+
+# 告警配置
+ALERT_EMAIL="admin@example.com"
+
+# 数据库连接配置
+DEFAULT_USER="webuser"
+DEFAULT_PASSWORD="WebUser_2024_Secure!"
+
+# 检查参数
+MAX_RETRIES=3
+HEALTH_CHECK_TIMEOUT=30
+
+# 告警阈值
+ALERT_THRESHOLD_MEMORY=80      # 内存使用率阈值(%)
+ALERT_THRESHOLD_CONNECTIONS=100 # 连接数阈值
+ALERT_THRESHOLD_DISK=80        # 磁盘使用率阈值(%)
+ALERT_THRESHOLD_SLOW_QUERIES=10 # 慢查询阈值 

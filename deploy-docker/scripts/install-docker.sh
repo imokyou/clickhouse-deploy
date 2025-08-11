@@ -2,6 +2,7 @@
 
 # ClickHouse Docker 环境安装脚本
 # 兼容 RHEL 兼容发行版和 Ubuntu LTS / Debian 系统
+# 优化版本：包含网络工具安装和Docker镜像构建
 
 set -e
 
@@ -46,19 +47,63 @@ install_basic_tools() {
     if command -v apt-get &> /dev/null; then
         # Debian/Ubuntu 系统
         apt-get update
-        apt-get install -y wget curl git vim net-tools ca-certificates gnupg lsb-release
+        apt-get install -y wget curl git vim net-tools ca-certificates gnupg lsb-release iproute2 iputils-ping telnet
     elif command -v yum &> /dev/null; then
         # RHEL/CentOS 系统
         yum update -y
-        yum install -y wget curl git vim net-tools
+        yum install -y wget curl git vim net-tools iproute iputils telnet
     elif command -v dnf &> /dev/null; then
         # Fedora/RHEL 8+ 系统
         dnf update -y
-        dnf install -y wget curl git vim net-tools
+        dnf install -y wget curl git vim net-tools iproute iputils telnet
     else
         echo "不支持的操作系统包管理器"
         exit 1
     fi
+}
+
+# 验证网络工具安装
+verify_network_tools() {
+    echo "1.1. 验证网络工具安装..."
+    
+    # 检查netstat
+    if command -v netstat &> /dev/null; then
+        echo "✓ netstat 已安装"
+        NETSTAT_VERSION=$(netstat --version 2>/dev/null | head -1 || echo "版本信息不可用")
+        echo "  netstat版本: $NETSTAT_VERSION"
+    else
+        echo "✗ netstat 未安装"
+        return 1
+    fi
+    
+    # 检查ip命令
+    if command -v ip &> /dev/null; then
+        echo "✓ iproute2 已安装"
+    else
+        echo "✗ iproute2 未安装"
+    fi
+    
+    # 检查ping
+    if command -v ping &> /dev/null; then
+        echo "✓ ping 已安装"
+    else
+        echo "✗ ping 未安装"
+    fi
+    
+    # 检查telnet
+    if command -v telnet &> /dev/null; then
+        echo "✓ telnet 已安装"
+    else
+        echo "✗ telnet 未安装"
+    fi
+    
+    # 显示网络工具使用示例
+    echo ""
+    echo "网络工具使用示例:"
+    echo "  netstat -tuln          # 查看监听端口"
+    echo "  netstat -rn            # 查看路由表"
+    echo "  ip addr show           # 查看网络接口"
+    echo "  ping -c 4 8.8.8.8      # 测试网络连通性"
 }
 
 # 安装Docker（Ubuntu/Debian）
@@ -194,10 +239,12 @@ setup_docker_service() {
     fi
 }
 
+
 # 主函数
 main() {
     detect_os
     install_basic_tools
+    verify_network_tools
     
     # 根据包管理器选择安装方式
     if command -v apt-get &> /dev/null; then

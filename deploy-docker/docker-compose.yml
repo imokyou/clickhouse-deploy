@@ -1,13 +1,10 @@
 services:
   clickhouse-server:
-    image: clickhouse/clickhouse-server:25.6
+    image: clickhouse/clickhouse-server:25.6-alpine
     container_name: clickhouse-server
     restart: unless-stopped
     environment:
       - CLICKHOUSE_DB=default
-      - CLICKHOUSE_USER=default
-      - CLICKHOUSE_PASSWORD=clickhouse123
-      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
     volumes:
       - ./clickhouse/config/config.d:/etc/clickhouse-server/config.d
       - ./clickhouse/config/users.d:/etc/clickhouse-server/users.d

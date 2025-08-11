@@ -1,10 +1,8 @@
-# ClickHouse Server 部署方案
+# ClickHouse Server 部署方案大纲
 
-## 概述
+和传统的方式一样，直接部署在云服务器上
 
-本项目提供了ClickHouse传统服务器部署的完整解决方案，包括自动化部署脚本、配置文件、监控工具和详细文档。支持 RHEL 兼容发行版和 Ubuntu LTS / Debian 两个主要平台。
-
-## 🏗️ 部署架构
+## 部署架构
 
 ### 单片单节点架构
 
@@ -25,102 +23,263 @@
 └─────────────────┘
 ```
 
-## 📋 系统要求
+## 快速开始
 
-### 硬件要求
+### 一键部署
+```bash
+# 克隆项目
+git clone <repository-url>
+cd clickhouse/deploy-server
 
-- **CPU**: 4核 (推荐8核)
-- **内存**: 16GB (推荐32GB)
-- **存储**: 150GB NVMe SSD (推荐300GB)
-- **网络**: 1Gbps带宽
+# 一键部署（需要sudo权限）
+sudo ./scripts/auto-deploy.sh
+```
 
-### 软件要求
+### 分步部署
+```bash
+# 1. 平台兼容性测试
+sudo ./scripts/platform-test.sh
 
-#### 支持的操作系统
+# 2. 系统环境准备
+sudo ./scripts/setup-system.sh
 
-**RHEL 兼容发行版:**
+# 3. 安装ClickHouse
+sudo ./scripts/install-clickhouse.sh
+
+# 4. 配置ClickHouse
+sudo ./scripts/setup-config.sh
+
+# 5. 启动服务
+sudo ./scripts/start-service.sh
+
+# 6. 健康检查
+./scripts/health-check.sh
+```
+
+## 支持的操作系统
+
+### RHEL 兼容发行版
 - RHEL 7.x/8.x/9.x
 - CentOS 7.x/8.x
 - Rocky Linux 8.x/9.x
 - AlmaLinux 8.x/9.x
 - Fedora 35+
 
-**Ubuntu/Debian:**
+### Ubuntu/Debian
 - Ubuntu 20.04 LTS+
 - Ubuntu 22.04 LTS+
 - Debian 11+
 - Debian 12+
 
-#### ClickHouse版本
-- ClickHouse 23.8 或更高版本
+## 快速开始
 
-## 🚀 快速部署
-
-### 一键部署（推荐）
-
+### 一键部署
 ```bash
-# 1. 下载项目文件
+# 克隆项目
 git clone <repository-url>
 cd clickhouse/deploy-server
 
-# 2. 给脚本添加执行权限（Linux环境）
-chmod +x scripts/*.sh
-
-# 3. 执行一键部署
+# 一键部署（需要sudo权限）
 sudo ./scripts/auto-deploy.sh
 ```
 
 ### 分步部署
-
 ```bash
-# 1. 系统环境准备
+# 1. 平台兼容性测试
+sudo ./scripts/platform-test.sh
+
+# 2. 系统环境准备
 sudo ./scripts/setup-system.sh
 
-# 2. 安装ClickHouse
+# 3. 安装ClickHouse
 sudo ./scripts/install-clickhouse.sh
 
-# 3. 配置ClickHouse
+# 4. 配置ClickHouse
 sudo ./scripts/setup-config.sh
 
-# 4. 启动服务
+# 5. 启动服务
 sudo ./scripts/start-service.sh
 
-# 5. 健康检查
+# 6. 健康检查
 ./scripts/health-check.sh
 ```
 
-## 📁 项目结构
+## 1. 环境准备阶段
 
-```
-deploy-server/
-├── README.md                    # 项目说明
-├── 部署大纲.md                  # 部署方案大纲
-├── clickhouse/                  # ClickHouse配置
-│   ├── config/                  # 配置文件
-│   │   ├── config.yml          # 主配置文件
-│   │   ├── users.yml           # 用户配置
-│   │   ├── performance.yml     # 性能优化配置
-│   │   ├── security.yml        # 安全配置
-│   │   ├── macros.yml          # 宏定义
-│   │   └── json-optimization.yml # JSON优化配置
-│   ├── data/                   # 数据目录
-│   └── logs/                   # 日志目录
-├── scripts/                     # 部署脚本
-│   ├── auto-deploy.sh          # 一键部署脚本
-│   ├── setup-system.sh         # 系统环境准备
-│   ├── install-clickhouse.sh   # ClickHouse安装
-│   ├── setup-config.sh         # 配置脚本
-│   ├── start-service.sh        # 服务启动
-│   ├── health-check.sh         # 健康检查
-│   ├── backup.sh               # 备份脚本
-│   └── monitor.sh              # 监控脚本
-└── docs/                       # 文档目录
-    ├── CentOS部署手册.md       # CentOS部署手册
-    ├── 运维手册.md             # 运维手册
-    └── 配置说明.md             # 配置说明
-```
+### 1.1 硬件配置确认
+- [ ] 确认服务器配置：4核CPU、16GB内存、150GB NVMe SSD
+- [ ] 验证网络带宽：1Gbps
+- [ ] 检查磁盘性能：IOPS > 10,000
+- [ ] 确认操作系统兼容性
 
-## 🔧 平台特性
+### 1.2 系统环境准备
+- [ ] 更新系统包（yum/dnf/apt）
+- [ ] 安装必要依赖包
+- [ ] 配置防火墙规则（firewall-cmd/ufw/iptables）
+- [ ] 设置系统参数优化
+- [ ] 创建专用用户和目录
+- [ ] 配置安全策略（SELinux/AppArmor）
+
+### 1.3 网络配置
+- [ ] 配置静态IP
+- [ ] 设置DNS解析
+- [ ] 配置防火墙开放端口（8123, 9000）
+- [ ] 测试网络连通性
+
+## 2. ClickHouse安装配置
+
+### 2.1 安装ClickHouse
+- [ ] 添加ClickHouse官方仓库
+- [ ] 安装ClickHouse Server和Client
+- [ ] 验证安装完整性
+- [ ] 配置systemd服务
+
+### 2.2 基础配置
+- [ ] 配置config.xml主配置文件
+- [ ] 设置用户和权限
+- [ ] 配置日志路径和级别
+- [ ] 设置数据目录结构
+- [ ] 配置临时文件目录
+
+### 2.3 性能优化配置
+- [ ] 内存配置优化
+- [ ] CPU线程池配置
+- [ ] 磁盘IO优化
+- [ ] 网络参数调优
+- [ ] 查询缓存配置
+
+## 3. 数据库初始化
+
+### 3.1 创建数据库结构
+- [ ] 创建主数据库
+- [ ] 设计表结构（基于JSON数据）
+- [ ] 设置分区策略
+- [ ] 配置索引优化
+- [ ] 设置TTL策略
+
+### 3.2 权限配置
+- [ ] 创建应用用户
+- [ ] 设置数据库权限
+- [ ] 配置行级安全策略
+- [ ] 设置连接限制
+
+### 3.3 数据导入准备
+- [ ] 准备数据导入脚本
+- [ ] 配置数据源连接
+- [ ] 设置批量导入策略
+- [ ] 准备数据验证脚本
+
+## 4. 服务启动和验证
+
+### 4.1 服务启动
+- [ ] 启动ClickHouse服务
+- [ ] 检查服务状态
+- [ ] 验证端口监听
+- [ ] 测试基础连接
+
+### 4.2 功能验证
+- [ ] 执行基础查询测试
+- [ ] 验证JSON查询功能
+- [ ] 测试性能指标
+- [ ] 验证用户权限
+
+## 5. 监控和运维
+
+### 5.1 监控配置
+- [ ] 配置系统监控
+- [ ] 设置ClickHouse指标监控
+- [ ] 配置告警规则
+- [ ] 设置日志监控
+
+### 5.2 备份策略
+- [ ] 配置数据备份脚本
+- [ ] 设置自动备份计划
+- [ ] 测试备份恢复流程
+- [ ] 配置备份监控
+
+### 5.3 安全加固
+- [ ] 配置SSL/TLS
+- [ ] 设置访问控制
+- [ ] 配置审计日志
+- [ ] 定期安全扫描
+
+## 6. 性能优化
+
+### 6.1 系统级优化
+- [ ] 内核参数调优
+- [ ] 文件系统优化
+- [ ] 网络参数优化
+- [ ] 内存管理优化
+
+### 6.2 ClickHouse优化
+- [ ] 查询性能优化
+- [ ] 存储引擎优化
+- [ ] 缓存策略优化
+- [ ] 并发参数调优
+
+## 7. 用户配置和安全
+
+### 7.1 用户配置
+- [ ] 创建管理员用户 (admin)
+- [ ] 创建Web应用用户 (webuser)
+- [ ] 创建演示用户 (demouser)
+- [ ] 配置用户权限
+- [ ] 设置网络访问控制
+- [ ] 生成安全密码哈希
+
+### 7.2 安全配置
+- [ ] 配置SSL/TLS加密
+- [ ] 设置防火墙规则
+- [ ] 配置访问控制列表
+- [ ] 启用审计日志
+- [ ] 设置安全策略
+
+### 7.3 用户测试
+- [ ] 测试用户连接
+- [ ] 验证用户权限
+- [ ] 测试网络访问
+- [ ] 验证安全配置
+
+## 8. 故障排查
+
+### 8.1 常见问题
+- [ ] 服务启动失败排查
+- [ ] 性能问题诊断
+- [ ] 内存不足处理
+- [ ] 磁盘空间问题
+- [ ] 用户连接问题
+- [ ] 权限配置问题
+
+### 8.2 日志分析
+- [ ] 系统日志分析
+- [ ] ClickHouse日志分析
+- [ ] 错误日志监控
+- [ ] 性能日志分析
+- [ ] 安全日志分析
+
+## 部署脚本说明
+
+### 自动化部署脚本
+| 脚本名称 | 功能 | 执行时间 | 平台支持 |
+|---------|------|----------|----------|
+| `auto-deploy.sh` | 一键完成所有部署步骤 | 10-15分钟 | 全平台 |
+| `setup-system.sh` | 系统环境准备和优化 | 3-5分钟 | 全平台 |
+| `install-clickhouse.sh` | 安装ClickHouse服务 | 2-3分钟 | 全平台 |
+| `setup-config.sh` | 配置优化和安全设置 | 2-3分钟 | 全平台 |
+| `start-service.sh` | 启动ClickHouse服务 | 30秒 | 全平台 |
+| `health-check.sh` | 健康检查和验证 | 30秒 | 全平台 |
+| `test-users.sh` | 用户配置测试 | 30秒 | 全平台 |
+| `generate-password-hash.sh` | 密码哈希生成 | 即时 | 全平台 |
+| `system-optimization.sh` | 系统性能优化 | 2-3分钟 | 全平台 |
+| `platform-test.sh` | 平台兼容性测试 | 1-2分钟 | 全平台 |
+
+### 运维脚本
+| 脚本名称 | 功能 | 执行频率 | 平台支持 |
+|---------|------|----------|----------|
+| `backup.sh` | 数据备份脚本 | 每日/每周 | 全平台 |
+| `monitor.sh` | 监控服务脚本 | 持续运行 | 全平台 |
+
+## 平台特性对比
 
 ### RHEL 兼容发行版特性
 - 支持 `yum` 和 `dnf` 包管理器
@@ -134,73 +293,439 @@ deploy-server/
 - 支持 AppArmor 安全策略
 - 兼容 systemd 服务管理
 
-## 📊 部署脚本说明
+## 部署检查清单
 
-| 脚本名称 | 功能 | 执行时间 | 平台支持 |
-|---------|------|----------|----------|
-| `auto-deploy.sh` | 一键完成所有部署步骤 | 10-15分钟 | 全平台 |
-| `setup-system.sh` | 系统环境准备和优化 | 3-5分钟 | 全平台 |
-| `install-clickhouse.sh` | 安装ClickHouse服务 | 2-3分钟 | 全平台 |
-| `setup-config.sh` | 配置优化和安全设置 | 2-3分钟 | 全平台 |
-| `start-service.sh` | 启动ClickHouse服务 | 30秒 | 全平台 |
-| `health-check.sh` | 健康检查和验证 | 30秒 | 全平台 |
-| `backup.sh` | 数据备份脚本 | 根据数据量 | 全平台 |
-| `monitor.sh` | 监控服务脚本 | 持续运行 | 全平台 |
+### 环境检查
+- [ ] 操作系统兼容性验证
+- [ ] 硬件配置满足要求
+- [ ] 网络连通性测试
+- [ ] 磁盘空间充足
 
-## 🔍 操作系统检测
+### 安装检查
+- [ ] ClickHouse安装成功
+- [ ] 配置文件正确
+- [ ] 服务启动正常
+- [ ] 端口监听正常
 
-脚本会自动检测以下操作系统：
+### 功能检查
+- [ ] 基础查询测试通过
+- [ ] 用户权限配置正确
+- [ ] 性能指标正常
+- [ ] 监控系统工作正常
 
-### RHEL 兼容发行版
-- 通过 `/etc/redhat-release` 或 `/etc/os-release` 检测
-- 支持 RHEL、CentOS、Rocky Linux、AlmaLinux、Fedora
+### 安全检查
+- [ ] 防火墙配置正确
+- [ ] 安全策略配置正确
+- [ ] 用户权限设置合理
+- [ ] 日志记录完整
 
-### Ubuntu/Debian
-- 通过 `/etc/os-release` 或 `/etc/debian_version` 检测
-- 支持 Ubuntu LTS、Debian 稳定版
+## 故障排查指南
 
-## 🛠️ 故障排查
+### 操作系统问题
+```bash
+# 检查操作系统版本
+cat /etc/os-release
 
-### 常见问题
+# 检查系统资源
+free -h
+df -h
+nproc
 
-1. **操作系统不支持**
-   ```bash
-   # 检查操作系统版本
-   cat /etc/os-release
-   ```
+# 运行平台兼容性测试
+./scripts/platform-test.sh
+```
 
-2. **包管理器错误**
-   ```bash
-   # RHEL 兼容发行版
-   sudo yum clean all && sudo yum update
-   
-   # Ubuntu/Debian
-   sudo apt update && sudo apt upgrade
-   ```
+### 网络问题
+```bash
+# 检查端口监听
+netstat -tlnp | grep clickhouse
 
-3. **防火墙配置**
-   ```bash
-   # 检查防火墙状态
-   sudo firewall-cmd --list-all  # RHEL
-   sudo ufw status               # Ubuntu
-   ```
+# 测试连接
+curl -s http://localhost:8123/ping
 
-4. **服务启动失败**
-   ```bash
-   # 查看服务状态
-   sudo systemctl status clickhouse-server
-   
-   # 查看详细日志
-   sudo journalctl -u clickhouse-server -f
-   ```
+# 检查防火墙状态
+sudo firewall-cmd --list-all  # RHEL
+sudo ufw status               # Ubuntu
+```
 
-## 📞 技术支持
+### 服务问题
+```bash
+# 检查服务状态
+systemctl status clickhouse-server
 
-- **文档**: 查看 `docs/` 目录下的详细文档
-- **日志**: 检查 `/var/log/clickhouse-server/` 目录
-- **配置**: 查看 `/etc/clickhouse-server/` 目录
-- **数据**: 查看 `/var/lib/clickhouse/` 目录
+# 查看日志
+journalctl -u clickhouse-server -f
 
-## 📄 许可证
+# 检查配置文件
+sudo clickhouse-server --config-file=/etc/clickhouse-server/config.xml --test-config
 
-本项目采用 MIT 许可证，详见 LICENSE 文件。 
+# 健康检查
+./scripts/health-check.sh
+```
+
+### 性能问题
+```sql
+-- 查看系统指标
+SELECT metric, value FROM system.metrics ORDER BY value DESC;
+
+-- 查看慢查询
+SELECT query, query_duration_ms FROM system.query_log 
+WHERE query_duration_ms > 1000 ORDER BY query_duration_ms DESC;
+
+-- 查看内存使用
+SELECT metric, value FROM system.metrics 
+WHERE metric LIKE '%memory%' ORDER BY value DESC;
+```
+
+### 用户权限问题
+```bash
+# 检查ClickHouse用户
+id clickhouse
+
+# 修复目录权限
+sudo chown -R clickhouse:clickhouse /var/lib/clickhouse
+sudo chown -R clickhouse:clickhouse /var/log/clickhouse-server
+
+# 测试用户配置
+./scripts/test-users.sh
+```
+
+## 监控和运维指南
+
+### 系统监控
+```bash
+# 启动监控脚本
+./scripts/monitor.sh
+
+# 查看监控日志
+tail -f /opt/clickhouse/logs/monitor_$(date +%Y%m%d).log
+
+# 检查系统资源
+free -h
+df -h
+top -p $(pgrep clickhouse-server)
+```
+
+### 数据备份
+```bash
+# 完整备份
+./scripts/backup.sh full
+
+# 增量备份
+./scripts/backup.sh incremental
+
+# 配置备份
+./scripts/backup.sh config
+
+# 查看备份日志
+tail -f /opt/clickhouse/logs/backup_$(date +%Y%m%d_%H%M%S).log
+```
+
+### 性能优化
+```bash
+# 系统级优化
+sudo ./scripts/system-optimization.sh
+
+# 重启系统应用优化
+sudo reboot
+
+# 重启后检查服务
+sudo systemctl status clickhouse-server
+```
+
+## 用户配置示例
+
+### 当前用户配置
+
+#### 默认用户 (default)
+```xml
+<default>
+    <profile>default</profile>
+    <networks>
+        <ip>::/0</ip>
+    </networks>
+    <password>clickhouse123</password>
+    <quota>default</quota>
+    <access_management>1</access_management>
+</default>
+```
+
+#### 管理员用户 (admin)
+```xml
+<admin>
+    <password>Admin_2024_Secure!</password>
+    <networks>
+        <ip>127.0.0.1</ip>
+        <ip>10.0.0.0/8</ip>
+        <ip>172.16.0.0/12</ip>
+        <ip>192.168.0.0/16</ip>
+    </networks>
+    <profile>default</profile>
+    <access_management>1</access_management>
+</admin>
+```
+
+#### Web用户 (webuser)
+```xml
+<webuser>
+    <password>WebUser_2024_Secure!</password>
+    <networks>
+        <ip>::/0</ip>
+    </networks>
+    <profile>default</profile>
+    <access_management>0</access_management>
+</webuser>
+```
+
+#### 演示用户 (demouser)
+```xml
+<demouser>
+    <password>DemoUser_2024_Secure!</password>
+    <networks>
+        <ip>::/0</ip>
+    </networks>
+    <profile>default</profile>
+    <access_management>0</access_management>
+    <readonly>1</readonly>
+    <default_database>demo</default_database>
+    <max_memory_usage_for_user_for_all_queries>12884901888</max_memory_usage_for_user_for_all_queries>
+</demouser>
+```
+
+### 密码哈希生成
+```bash
+# Linux/macOS
+./scripts/generate-password-hash.sh "your_password"
+```
+
+### 用户测试
+```bash
+# 测试用户配置
+./scripts/test-users.sh
+
+# 手动测试连接
+clickhouse-client --user=admin --password=Admin_2024_Secure!
+clickhouse-client --user=webuser --password=WebUser_2024_Secure!
+clickhouse-client --user=demouser --password=DemoUser_2024_Secure!
+```
+
+## 日志查看
+
+### 系统日志
+```bash
+# 查看ClickHouse服务日志
+journalctl -u clickhouse-server -f
+
+# 查看ClickHouse应用日志
+tail -f /var/log/clickhouse-server/clickhouse-server.log
+
+# 查看错误日志
+tail -f /var/log/clickhouse-server/clickhouse-server.err.log
+```
+
+### 监控日志
+```bash
+# 查看健康检查日志
+tail -f /opt/clickhouse/logs/health-check.log
+
+# 查看监控日志
+tail -f /opt/clickhouse/logs/monitor_$(date +%Y%m%d).log
+
+# 查看备份日志
+tail -f /opt/clickhouse/logs/backup_$(date +%Y%m%d_%H%M%S).log
+```
+
+### 性能日志
+```sql
+-- 查看查询日志
+SELECT query, query_duration_ms, user, client_hostname 
+FROM system.query_log 
+WHERE query_duration_ms > 1000 
+ORDER BY query_duration_ms DESC 
+LIMIT 10;
+
+-- 查看慢查询
+SELECT query, query_duration_ms, user 
+FROM system.query_log 
+WHERE query_duration_ms > 5000 
+ORDER BY query_duration_ms DESC;
+
+-- 查看错误查询
+SELECT query, exception, user 
+FROM system.query_log 
+WHERE exception != '' 
+ORDER BY event_time DESC;
+```
+
+## 文档结构
+
+```
+deploy-server/
+├── README.md                 # 部署方案大纲
+├── scripts/                  # 部署和运维脚本
+│   ├── auto-deploy.sh       # 一键部署脚本
+│   ├── setup-system.sh      # 系统环境准备
+│   ├── install-clickhouse.sh # ClickHouse安装
+│   ├── setup-config.sh      # 配置设置
+│   ├── start-service.sh     # 服务启动
+│   ├── health-check.sh      # 健康检查
+│   ├── monitor.sh           # 监控脚本
+│   ├── backup.sh            # 备份脚本
+│   ├── test-users.sh        # 用户测试
+│   ├── platform-test.sh     # 平台测试
+│   ├── system-optimization.sh # 系统优化
+│   └── generate-password-hash.sh # 密码哈希生成
+├── clickhouse/              # ClickHouse配置和数据
+│   ├── config/              # 配置文件
+│   │   ├── users.d/         # 用户配置
+│   │   └── config.d/        # 主配置
+│   ├── data/                # 数据目录
+│   └── logs/                # 日志目录
+└── docs/                    # 详细文档
+    ├── 部署手册.md          # 详细部署指南
+    ├── 运维手册.md          # 运维操作指南
+    └── 配置说明.md          # 配置参数说明
+```
+```
+
+## 配置优化说明
+
+### 内存分配优化 (16GB总内存)
+```json
+总内存使用限制: 12GB (75%)
+├── 查询内存限制: 12GB (75%)
+├── 用户内存限制: 12GB (75%)
+└── 缓存分配:
+    ├── 未压缩缓存: 6GB (37.5%)
+    ├── 标记缓存: 3GB (18.75%)
+    └── 系统预留: 3GB (18.75%)
+```
+
+### CPU线程优化 (4核CPU)
+```json
+最大线程数: 4 (1:1对应CPU核心)
+插入线程数: 4
+异步插入线程: 4
+后台任务线程: 4
+并发查询数: 10 (CPU核心数 × 2 + 2)
+```
+
+### 存储优化 (150GB NVMe SSD)
+```json
+最大合并空间: 100GB (67%)
+最小合并空间: 50GB (33%)
+索引粒度: 8192
+```
+
+## 常用运维命令
+
+```bash
+# 服务管理
+sudo systemctl status clickhouse-server
+sudo systemctl start clickhouse-server
+sudo systemctl stop clickhouse-server
+sudo systemctl restart clickhouse-server
+
+# 日志查看
+sudo journalctl -u clickhouse-server -f
+sudo tail -f /var/log/clickhouse-server/clickhouse-server.log
+
+# 数据库连接
+clickhouse-client --user=admin --password=Admin_2024_Secure!
+
+# 健康检查
+./scripts/health-check.sh
+
+# 监控服务
+./scripts/monitor.sh
+
+# 备份数据
+./scripts/backup.sh
+
+# 测试用户配置
+./scripts/test-users.sh
+
+# 系统优化
+sudo ./scripts/system-optimization.sh
+
+# 平台兼容性测试
+./scripts/platform-test.sh
+```
+
+## 日志查看
+
+### 系统日志
+```bash
+# 查看ClickHouse服务日志
+journalctl -u clickhouse-server -f
+
+# 查看ClickHouse应用日志
+tail -f /var/log/clickhouse-server/clickhouse-server.log
+
+# 查看错误日志
+tail -f /var/log/clickhouse-server/clickhouse-server.err.log
+```
+
+### 监控日志
+```bash
+# 查看健康检查日志
+tail -f /opt/clickhouse/logs/health-check.log
+
+# 查看监控日志
+tail -f /opt/clickhouse/logs/monitor_$(date +%Y%m%d).log
+
+# 查看备份日志
+tail -f /opt/clickhouse/logs/backup_$(date +%Y%m%d_%H%M%S).log
+```
+
+### 性能日志
+```sql
+-- 查看查询日志
+SELECT query, query_duration_ms, user, client_hostname 
+FROM system.query_log 
+WHERE query_duration_ms > 1000 
+ORDER BY query_duration_ms DESC 
+LIMIT 10;
+
+-- 查看慢查询
+SELECT query, query_duration_ms, user 
+FROM system.query_log 
+WHERE query_duration_ms > 5000 
+ORDER BY query_duration_ms DESC;
+
+-- 查看错误查询
+SELECT query, exception, user 
+FROM system.query_log 
+WHERE exception != '' 
+ORDER BY event_time DESC;
+```
+
+## 文档结构
+
+```
+deploy-server/
+├── README.md                 # 部署方案大纲
+├── scripts/                  # 部署和运维脚本
+│   ├── auto-deploy.sh       # 一键部署脚本
+│   ├── setup-system.sh      # 系统环境准备
+│   ├── install-clickhouse.sh # ClickHouse安装
+│   ├── setup-config.sh      # 配置设置
+│   ├── start-service.sh     # 服务启动
+│   ├── health-check.sh      # 健康检查
+│   ├── monitor.sh           # 监控脚本
+│   ├── backup.sh            # 备份脚本
+│   ├── test-users.sh        # 用户测试
+│   ├── platform-test.sh     # 平台测试
+│   ├── system-optimization.sh # 系统优化
+│   └── generate-password-hash.sh # 密码哈希生成
+├── clickhouse/              # ClickHouse配置和数据
+│   ├── config/              # 配置文件
+│   │   ├── users.d/         # 用户配置
+│   │   └── config.d/        # 主配置
+│   ├── data/                # 数据目录
+│   └── logs/                # 日志目录
+└── docs/                    # 详细文档
+    ├── 部署手册.md          # 详细部署指南
+    ├── 运维手册.md          # 运维操作指南
+    └── 配置说明.md          # 配置参数说明
+```

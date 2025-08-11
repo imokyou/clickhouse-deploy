@@ -82,8 +82,8 @@ configure_system_params() {
     echo "配置系统参数..."
     cat >> /etc/sysctl.conf << EOF
 # ClickHouse优化参数
-fs.file-max = 65536
-fs.nr_open = 65536
+fs.file-max = 2097152
+fs.nr_open = 2097152
 net.core.somaxconn = 65535
 net.core.netdev_max_backlog = 5000
 net.ipv4.tcp_max_syn_backlog = 65535
@@ -104,11 +104,30 @@ configure_user_limits() {
     echo "配置用户限制..."
     cat >> /etc/security/limits.conf << EOF
 # ClickHouse用户限制
-clickhouse soft nofile 65536
-clickhouse hard nofile 65536
+clickhouse soft nofile 1000000
+clickhouse hard nofile 1000000
 clickhouse soft nproc 32768
 clickhouse hard nproc 32768
 EOF
+}
+
+# 配置 systemd limit
+configure_systemd_override() {
+    echo "配置 systemd 资源限制...（clickhouse-server）"
+
+    # 创建 systemd override 文件
+    mkdir -p /etc/systemd/system/clickhouse-server.service.d
+
+    # 写入限制配置
+    cat > /etc/systemd/system/clickhouse-server.service.d/override.conf << EOF
+[Service]
+LimitNOFILE=1000000
+LimitNPROC=32768
+EOF
+
+    # 重新加载 systemd 并重启服务
+    systemctl daemon-reexec
+    systemctl daemon-reload
 }
 
 # 配置防火墙
@@ -170,6 +189,7 @@ main() {
     create_directories
     configure_system_params
     configure_user_limits
+    configure_systemd_override
     configure_firewall
     configure_selinux
     configure_apparmor

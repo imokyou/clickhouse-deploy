@@ -1,0 +1,24 @@
+# ClickHouse Docker 监控配置文件
+# 复制此文件为 monitor.conf 并修改相应配置
+
+# 日志配置
+LOG_FILE="/tmp/clickhouse-monitor.log"
+
+# 告警配置
+ALERT_EMAIL="admin@example.com"
+
+# Docker Compose配置
+DOCKER_COMPOSE_FILE="docker-compose.yml"
+
+# 监控间隔（秒）
+MONITOR_INTERVAL=30
+
+# 数据库连接配置
+DEFAULT_USER="default"
+DEFAULT_PASSWORD="clickhouse123"
+
+# 告警阈值
+ALERT_THRESHOLD_MEMORY=80      # 内存使用率阈值(%)
+ALERT_THRESHOLD_CONNECTIONS=100 # 连接数阈值
+ALERT_THRESHOLD_DISK=80        # 磁盘使用率阈值(%)
+ALERT_THRESHOLD_SLOW_QUERIES=10 # 慢查询阈值 

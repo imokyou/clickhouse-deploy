@@ -1,4 +1,0 @@
-clickhouse:
-  macros:
-    replica: "01"
-    shard: "01" 

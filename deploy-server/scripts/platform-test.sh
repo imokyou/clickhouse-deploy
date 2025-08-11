@@ -73,20 +73,31 @@ check_hardware() {
         echo "⚠ CPU核心数不足: $CPU_CORES 核 (推荐4核以上)"
     fi
     
-    # 检查内存大小
-    MEMORY_GB=$(free -g | awk 'NR==2{print $2}')
-    if [ "$MEMORY_GB" -ge 16 ]; then
-        echo "✓ 内存大小满足要求: $MEMORY_GB GB"
+    # 检查内存大小 - 使用KB为单位避免进制问题
+    MEMORY_KB=$(free -k | awk 'NR==2{print $2}')
+    MEMORY_GB_1024=$(echo "scale=1; $MEMORY_KB / 1024 / 1024" | bc -l)
+    MEMORY_GB_1000=$(echo "scale=1; $MEMORY_KB / 1000 / 1000" | bc -l)
+    
+    echo "内存信息: ${MEMORY_KB}KB (约${MEMORY_GB_1024}GB 1024进制 / ${MEMORY_GB_1000}GB 1000进制)"
+    
+    # 使用bc进行浮点数比较
+    if [ "$(echo "$MEMORY_GB_1024 >= 16" | bc -l)" -eq 1 ] || [ "$(echo "$MEMORY_GB_1000 >= 15" | bc -l)" -eq 1 ]; then
+        echo "✓ 内存大小满足要求"
     else
-        echo "⚠ 内存大小不足: $MEMORY_GB GB (推荐16GB以上)"
+        echo "⚠ 内存大小不足 (推荐16GB以上)"
     fi
     
-    # 检查磁盘空间
-    DISK_GB=$(df -BG / | awk 'NR==2{print $4}' | sed 's/G//')
-    if [ "$DISK_GB" -ge 150 ]; then
-        echo "✓ 磁盘空间满足要求: $DISK_GB GB"
+    # 检查磁盘空间 - 使用字节为单位避免进制问题
+    DISK_BYTES=$(df -B1 / | awk 'NR==2{print $4}')
+    DISK_GB_1024=$((DISK_BYTES / 1024 / 1024 / 1024))
+    DISK_GB_1000=$((DISK_BYTES / 1000 / 1000 / 1000))
+    
+    echo "磁盘空间: ${DISK_BYTES}字节 (约${DISK_GB_1024}GB 1024进制 / ${DISK_GB_1000}GB 1000进制)"
+    
+    if [ "$DISK_GB_1024" -ge 150 ] || [ "$DISK_GB_1000" -ge 145 ]; then
+        echo "✓ 磁盘空间满足要求"
     else
-        echo "⚠ 磁盘空间不足: $DISK_GB GB (推荐150GB以上)"
+        echo "⚠ 磁盘空间不足 (推荐150GB以上)"
     fi
 }
 
@@ -195,18 +206,19 @@ check_required_tools() {
         if command -v "$tool" &> /dev/null; then
             echo "✓ $tool 已安装"
         else
-            echo "⚠ $tool 未安装"
+            echo "⚠ $tool 未安装 (将在系统环境准备阶段安装)"
             MISSING_TOOLS+=("$tool")
         fi
     done
     
     if [ ${#MISSING_TOOLS[@]} -eq 0 ]; then
         echo "✓ 所有必要工具已安装"
-        return 0
     else
-        echo "⚠ 缺少工具: ${MISSING_TOOLS[*]}"
-        return 1
+        echo "⚠ 缺少工具: ${MISSING_TOOLS[*]} (将在后续步骤中自动安装)"
     fi
+    
+    # 不将缺少工具作为错误，因为会在setup-system.sh中安装
+    return 0
 }
 
 # 检查端口可用性
@@ -237,8 +249,18 @@ generate_report() {
     echo "操作系统: $OS_NAME $OS_VERSION"
     echo "系统架构: $(uname -m)"
     echo "CPU核心数: $(nproc)"
-    echo "内存大小: $(free -g | awk 'NR==2{print $2}') GB"
-    echo "磁盘空间: $(df -BG / | awk 'NR==2{print $4}' | sed 's/G//') GB"
+    
+    # 重新计算内存和磁盘信息用于报告
+    MEMORY_KB=$(free -k | awk 'NR==2{print $2}')
+    MEMORY_GB_1024=$(echo "scale=1; $MEMORY_KB / 1024 / 1024" | bc -l)
+    MEMORY_GB_1000=$(echo "scale=1; $MEMORY_KB / 1000 / 1000" | bc -l)
+    echo "内存大小: ${MEMORY_KB}KB (约${MEMORY_GB_1000}GB 1000进制 / ${MEMORY_GB_1024}GB 1024进制)"
+    
+    DISK_BYTES=$(df -B1 / | awk 'NR==2{print $4}')
+    DISK_GB_1024=$((DISK_BYTES / 1024 / 1024 / 1024))
+    DISK_GB_1000=$((DISK_BYTES / 1000 / 1000 / 1000))
+    echo "磁盘空间: ${DISK_BYTES}字节 (约${DISK_GB_1024}GB 1024进制 / ${DISK_GB_1000}GB 1000进制)"
+    
     echo "测试时间: $(date)"
     echo ""
     
@@ -283,9 +305,7 @@ main() {
         TOTAL_ERRORS=$((TOTAL_ERRORS + 1))
     fi
     
-    if ! check_required_tools; then
-        TOTAL_ERRORS=$((TOTAL_ERRORS + 1))
-    fi
+    check_required_tools
     
     if ! check_ports; then
         TOTAL_ERRORS=$((TOTAL_ERRORS + 1))

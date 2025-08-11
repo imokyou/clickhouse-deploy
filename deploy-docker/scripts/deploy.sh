@@ -64,8 +64,8 @@ echo "5. 启动 ClickHouse 服务... $COMPOSE_CMD up -d"
 $COMPOSE_CMD up -d
 
 # 等待服务启动
-echo "6. 等待服务启动...sleep 30"
-sleep 30
+echo "6. 等待服务启动...sleep 60"
+sleep 60
 
 # 检查服务状态
 echo "7. 检查服务状态... $COMPOSE_CMD ps"
@@ -73,19 +73,19 @@ $COMPOSE_CMD ps
 
 # 等待服务完全启动
 echo "8. 等待服务完全启动..."
-for i in {1..10}; do
+for i in {1..12}; do
     if curl -s http://localhost:8123/ping > /dev/null; then
         echo "✓ ClickHouse服务已启动"
         break
     else
-        echo "等待服务启动... ($i/10)"
+        echo "等待服务启动... ($i/12), 已等待 $((i*10)) 秒"
         sleep 10
     fi
 done
 
 # 测试连接
-echo "9. 测试 ClickHouse 连接... $COMPOSE_CMD exec clickhouse clickhouse-client --query"
-if $COMPOSE_CMD exec clickhouse clickhouse-client --query "SELECT version()" > /dev/null 2>&1; then
+echo "9. 测试 ClickHouse 连接... $COMPOSE_CMD exec clickhouse-server clickhouse-client --query"
+if $COMPOSE_CMD exec clickhouse-server clickhouse-client -u default --password clickhouse123 --query "SELECT version()" > /dev/null 2>&1; then
     echo "✓ ClickHouse连接测试成功"
 else
     echo "⚠ ClickHouse连接测试失败，请检查日志"
@@ -93,8 +93,8 @@ else
 fi
 
 # 创建测试数据库和表
-echo "10. 创建测试数据... $COMPOSE_CMD exec clickhouse clickhouse-client --query"
-$COMPOSE_CMD exec clickhouse clickhouse-client --query "
+echo "10. 创建测试数据... $COMPOSE_CMD exec clickhouse-server clickhouse-client --query"
+$COMPOSE_CMD exec clickhouse-server clickhouse-client -u default --password clickhouse123 --query "
 CREATE DATABASE IF NOT EXISTS test_db;
 CREATE TABLE IF NOT EXISTS test_db.test_table (
     id UInt32,
@@ -115,7 +115,7 @@ echo "默认密码: clickhouse123"
 echo ""
 echo "常用命令:"
 echo "  查看服务状态: $COMPOSE_CMD ps"
-echo "  查看日志: $COMPOSE_CMD logs -f clickhouse"
-echo "  连接数据库: $COMPOSE_CMD exec clickhouse clickhouse-client"
+echo "  查看日志: $COMPOSE_CMD logs -f clickhouse-server"
+echo "  连接数据库: $COMPOSE_CMD exec clickhouse-server clickhouse-client -u default --password clickhouse123"
 echo "  健康检查: ./scripts/health-check.sh"
 echo "  备份数据: ./scripts/backup.sh" 
