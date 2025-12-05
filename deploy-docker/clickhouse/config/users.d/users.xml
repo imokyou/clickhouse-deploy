@@ -18,7 +18,7 @@
         <!-- 管理员用户 - 拥有所有权限 -->
         <admin>
             <!-- 暂时使用明文密码进行测试 -->
-            <password>Admin_2024_Secure!</password>
+            <password>xnJ8_M2zd7R!uQXaVgQDbTYn</password>
             <networks>
                 <!-- 限制管理员只能从本地和内部网络访问 -->
                 <ip>127.0.0.1</ip>
@@ -35,7 +35,7 @@
         <!-- 普通Web用户 - 只有基本权限 -->
         <webuser>
             <!-- 暂时使用明文密码进行测试 -->
-            <password>WebUser_2024_Secure!</password>
+            <password>w2E8_B43wzP!gS53c56Lz0g6</password>
             <networks>
                 <!-- 允许从任何网络访问，生产环境中应该限制 -->
                 <ip>::/0</ip>
@@ -47,7 +47,7 @@
         </webuser>
         
         <demouser>
-            <password>DemoUser_2024_Secure!</password>
+            <password>l0K3_L12g5F!pX83c45Jz1h7</password>
             <networks>
                 <ip>::/0</ip>
             </networks>

@@ -6,14 +6,39 @@
 
 set -e
 
+# 默认环境
+ENV="dev"
+
+# 解析参数
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -env|--environment)
+            ENV="$2"
+            shift 2
+            ;;
+        *)
+            echo "未知参数: $1"
+            echo "使用方法: $0 [-env ENV]"
+            exit 1
+            ;;
+    esac
+done
+
+# 验证环境参数
+if [[ ! "$ENV" =~ ^(dev|test|prod)$ ]]; then
+    echo "错误: 环境参数必须是 dev, test 或 prod"
+    exit 1
+fi
+
 echo "=== 开始设置 ClickHouse 项目 ==="
+echo "部署环境: $ENV"
 
 # 获取脚本所在目录
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-# 设置部署目录
-DEPLOY_DIR="/opt/clickhouse-deploy"
+# 根据环境设置部署目录
+DEPLOY_DIR="/opt/clickhouse-deploy-${ENV}"
 
 # 检测操作系统类型
 detect_os() {
