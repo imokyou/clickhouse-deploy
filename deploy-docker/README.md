@@ -649,3 +649,444 @@ sudo ./scripts/setup-project.sh -env prod
 - **配置说明.md**: 配置详细说明和优化建议
 - **运维手册.md**: 运维操作指南和故障排查
 
+---
+
+## 快速开始
+
+### 一键部署（推荐）
+
+```bash
+# 部署到开发环境
+sudo ./scripts/auto-deploy.sh -env dev
+
+# 部署到测试环境
+sudo ./scripts/auto-deploy.sh -env test
+
+# 部署到生产环境
+sudo ./scripts/auto-deploy.sh -env prod
+```
+
+### 交互式配置流程
+
+运行部署脚本后，会依次询问：
+
+#### 1. 端口配置
+```
+配置端口映射 (留空使用默认值):
+HTTP端口 (默认: 8123): [输入或回车]
+Native端口 (默认: 9000): [输入或回车]
+```
+
+#### 2. 密码配置
+```
+配置用户密码 (留空使用默认值):
+注意: 密码应包含大小写字母、数字和特殊字符，建议长度至少12位
+
+admin 用户密码 (默认: xnJ8_M2zd7R!uQXaVgQDbTYn): [输入或回车]
+webuser 用户密码 (默认: w2E8_B43wzP!gS53c56Lz0g6): [输入或回车]
+demouser 用户密码 (默认: l0K3_L12g5F!pX83c45Jz1h7): [输入或回车]
+```
+
+**注意**：密码输入时不会显示，这是安全特性。
+
+### 部署结果
+
+部署成功后，会自动：
+
+1. 创建部署目录：`/opt/clickhouse-deploy-{env}`
+2. 生成配置文件：`/opt/clickhouse-deploy-{env}/.env`
+3. 启动 Docker 容器：`clickhouse-server-{env}`
+4. 执行健康检查
+
+### 查看配置
+
+```bash
+# 查看 .env 配置
+cd /opt/clickhouse-deploy-dev
+cat .env
+
+# 查看服务状态
+docker compose ps
+
+# 查看容器日志
+docker compose logs -f clickhouse-server-dev
+```
+
+### 连接数据库
+
+```bash
+# 使用 default 用户
+docker exec clickhouse-server-dev clickhouse-client -u default --password clickhouse123
+
+# 使用 admin 用户（需要使用你设置的密码）
+docker exec clickhouse-server-dev clickhouse-client -u admin --password YOUR_ADMIN_PASSWORD
+
+# 使用 webuser 用户
+docker exec clickhouse-server-dev clickhouse-client -u webuser --password YOUR_WEBUSER_PASSWORD
+```
+
+### 常用命令
+
+```bash
+# 进入部署目录
+cd /opt/clickhouse-deploy-dev
+
+# 健康检查
+./scripts/health-check.sh
+
+# 用户测试
+./scripts/test-users.sh
+
+# 监控服务
+./scripts/monitor.sh --once
+
+# 同步密码（修改 .env 后）
+./scripts/sync-passwords.sh
+
+# 查看日志
+docker compose logs -f
+
+# 重启服务
+docker compose restart
+
+# 停止服务
+docker compose down
+
+# 备份数据
+./scripts/backup.sh
+```
+
+### 访问不同环境
+
+```bash
+# 开发环境
+curl http://localhost:8123/ping
+docker exec clickhouse-server-dev clickhouse-client --query "SELECT 1"
+
+# 测试环境
+curl http://localhost:8223/ping
+docker exec clickhouse-server-test clickhouse-client --query "SELECT 1"
+
+# 生产环境
+curl http://localhost:8323/ping
+docker exec clickhouse-server-prod clickhouse-client --query "SELECT 1"
+```
+
+---
+
+## 环境变量配置
+
+### 概述
+
+部署脚本支持通过 `.env` 文件配置服务名称、容器名称、端口和用户密码，实现多环境隔离部署。
+
+### 支持的配置项
+
+#### 服务配置
+- `CLICKHOUSE_SERVICE_NAME`: Docker Compose 服务名称
+- `CLICKHOUSE_CONTAINER_NAME`: Docker 容器名称
+
+#### 端口配置
+- `CLICKHOUSE_HTTP_PORT`: HTTP 接口端口（默认：8123）
+- `CLICKHOUSE_NATIVE_PORT`: Native 接口端口（默认：9000）
+
+#### 用户密码配置
+- `ADMIN_PASSWORD`: admin 用户密码
+- `WEBUSER_PASSWORD`: webuser 用户密码
+- `DEMOUSER_PASSWORD`: demouser 用户密码（只读用户）
+
+### 配置文件位置
+
+**每个环境独立的 `.env` 文件**：
+```
+/opt/clickhouse-deploy-dev/.env      # 开发环境配置
+/opt/clickhouse-deploy-test/.env     # 测试环境配置
+/opt/clickhouse-deploy-prod/.env     # 生产环境配置
+```
+
+### .env 文件示例
+
+```bash
+# ClickHouse 部署配置 - 开发环境
+CLICKHOUSE_SERVICE_NAME=clickhouse-server-dev
+CLICKHOUSE_CONTAINER_NAME=clickhouse-server-dev
+
+# 端口配置
+CLICKHOUSE_HTTP_PORT=8123
+CLICKHOUSE_NATIVE_PORT=9000
+
+# 用户密码配置
+ADMIN_PASSWORD=Dev_Admin_2024!
+WEBUSER_PASSWORD=Dev_Web_2024!
+DEMOUSER_PASSWORD=Dev_Demo_2024!
+```
+
+### docker-compose.yml 环境变量支持
+
+```yaml
+services:
+  clickhouse-server:
+    image: clickhouse/clickhouse-server:25.6-alpine
+    container_name: ${CLICKHOUSE_CONTAINER_NAME:-clickhouse-server}
+    ports:
+      - "${CLICKHOUSE_HTTP_PORT:-8123}:8123"
+      - "${CLICKHOUSE_NATIVE_PORT:-9000}:9000"
+```
+
+Docker Compose 会自动读取当前目录的 `.env` 文件。
+
+---
+
+## 密码管理
+
+### 设计理念
+
+1. **配置集中管理**：密码配置在 `.env` 文件中
+2. **自动同步机制**：通过脚本自动同步到 `users.xml`
+3. **多环境隔离**：每个环境独立的密码配置
+
+### 密码工作流程
+
+```
+.env 文件           →    auto-deploy.sh/sync-passwords.sh    →    users.xml
+配置密码                  读取并同步                              ClickHouse 使用
+
+ADMIN_PASSWORD           sed 替换                              <password><![CDATA[...]]></password>
+WEBUSER_PASSWORD         使用 CDATA 包裹            
+DEMOUSER_PASSWORD        防止特殊字符问题
+```
+
+### 方式 1：自动部署（推荐）
+
+```bash
+sudo ./scripts/auto-deploy.sh -env dev
+# 交互式输入密码，自动同步到 users.xml
+```
+
+### 方式 2：手动配置
+
+```bash
+# 1. 编辑 .env 文件
+cd /opt/clickhouse-deploy-dev
+vim .env
+
+# 2. 修改密码配置
+ADMIN_PASSWORD=New_Secure_Password!
+WEBUSER_PASSWORD=New_Web_Password!
+DEMOUSER_PASSWORD=New_Demo_Password!
+
+# 3. 同步到 users.xml
+./scripts/sync-passwords.sh
+
+# 4. 重启服务（脚本会询问）
+docker compose restart
+```
+
+### 多环境密码示例
+
+```bash
+# 开发环境 (dev)
+ADMIN_PASSWORD=Dev_Admin_2024!
+WEBUSER_PASSWORD=Dev_Web_2024!
+DEMOUSER_PASSWORD=Dev_Demo_2024!
+
+# 测试环境 (test)
+ADMIN_PASSWORD=Test_Admin_2024!
+WEBUSER_PASSWORD=Test_Web_2024!
+DEMOUSER_PASSWORD=Test_Demo_2024!
+
+# 生产环境 (prod)
+ADMIN_PASSWORD=Prod_SecureAdmin_2024!@#
+WEBUSER_PASSWORD=Prod_SecureWeb_2024!@#
+DEMOUSER_PASSWORD=Prod_SecureDemo_2024!@#
+```
+
+### 密码安全建议
+
+1. **使用强密码**
+   - 至少 12 位字符
+   - 包含大小写字母、数字和特殊字符
+   - 示例：`Secure_Pass_2024!@#`
+
+2. **不同环境使用不同密码**
+   - 开发环境可以使用相对简单的密码
+   - 生产环境必须使用强密码
+
+3. **保护 .env 文件**
+   ```bash
+   chmod 600 .env
+   ```
+
+4. **定期更换密码**
+   - 生产环境建议每 3-6 个月更换一次
+   - 修改后运行 `sync-passwords.sh` 同步
+
+5. **备份配置**
+   ```bash
+   cp .env .env.backup
+   ```
+
+### sync-passwords.sh 脚本
+
+用于在修改 `.env` 文件后同步密码到 `users.xml`：
+
+```bash
+cd /opt/clickhouse-deploy-dev
+./scripts/sync-passwords.sh
+```
+
+功能：
+- 读取 `.env` 中的密码配置
+- 自动备份 `users.xml`
+- 使用 CDATA 包裹密码更新到 `users.xml`
+- 询问是否重启服务
+
+### 为什么使用 CDATA？
+
+```xml
+<!-- 不使用 CDATA：特殊字符可能导致 XML 解析错误 -->
+<password>Pass<word&!@#</password>  ❌
+
+<!-- 使用 CDATA：安全处理所有特殊字符 -->
+<password><![CDATA[Pass<word&!@#]]></password>  ✅
+```
+
+---
+
+## 故障排查
+
+### 端口已被占用
+
+```bash
+# 检查端口占用
+netstat -tuln | grep 8123
+
+# 解决方案：使用不同端口
+sudo ./scripts/auto-deploy.sh -env dev
+# 输入: 8223
+```
+
+### 容器名冲突
+
+```bash
+# 检查现有容器
+docker ps -a | grep clickhouse
+
+# 清理旧容器
+docker stop clickhouse-server-dev
+docker rm clickhouse-server-dev
+
+# 重新部署
+sudo ./scripts/auto-deploy.sh -env dev
+```
+
+### 密码问题
+
+```bash
+# 检查 .env 文件中的密码
+cat .env | grep PASSWORD
+
+# 检查 users.xml 中的密码格式
+cat clickhouse/config/users.d/users.xml | grep -A 2 "admin"
+
+# 重新同步密码
+./scripts/sync-passwords.sh
+
+# 重启服务
+docker compose restart
+```
+
+### 多环境密码混乱
+
+```bash
+# 每个环境独立查看
+cd /opt/clickhouse-deploy-dev && cat .env | grep PASSWORD
+cd /opt/clickhouse-deploy-test && cat .env | grep PASSWORD
+cd /opt/clickhouse-deploy-prod && cat .env | grep PASSWORD
+```
+
+---
+
+## 工具脚本
+
+### auto-deploy.sh
+一键部署脚本，支持多环境部署和交互式配置。
+
+```bash
+# 查看帮助
+./scripts/auto-deploy.sh -h
+
+# 部署到指定环境
+sudo ./scripts/auto-deploy.sh -env prod
+```
+
+### sync-passwords.sh ⭐ 新增
+从 `.env` 文件同步密码到 `users.xml`。
+
+```bash
+./scripts/sync-passwords.sh
+```
+
+### health-check.sh
+全面的健康检查脚本。
+
+```bash
+./scripts/health-check.sh
+```
+
+### monitor.sh
+实时监控服务状态和性能指标。
+
+```bash
+# 单次检查
+./scripts/monitor.sh --once
+
+# 持续监控
+./scripts/monitor.sh
+```
+
+### test-users.sh
+测试用户连接（交互式输入密码）。
+
+```bash
+./scripts/test-users.sh
+```
+
+### backup.sh
+数据备份脚本。
+
+```bash
+./scripts/backup.sh
+```
+
+---
+
+## 最佳实践
+
+### 初次部署
+
+1. 使用 `auto-deploy.sh` 进行一键部署
+2. 根据提示配置端口和密码
+3. 运行健康检查验证部署
+
+### 密码管理
+
+1. 在 `.env` 文件中配置密码
+2. 使用 `sync-passwords.sh` 同步到 `users.xml`
+3. 定期更换生产环境密码
+4. 保护 `.env` 文件权限
+
+### 多环境部署
+
+1. 为每个环境分配不同的端口
+2. 使用不同的密码
+3. 独立管理各环境配置
+4. 定期审计各环境安全性
+
+### 运维操作
+
+1. 定期运行健康检查
+2. 监控系统资源使用
+3. 定期备份数据和配置
+4. 记录重要操作和变更
+

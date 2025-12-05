@@ -5,6 +5,13 @@
 
 set -e
 
+# 加载环境变量
+if [ -f ".env" ]; then
+    set -a
+    source .env
+    set +a
+fi
+
 # 配置参数
 CONFIG_FILE="monitor.conf"
 LOG_FILE="/tmp/clickhouse-monitor.log"
@@ -20,8 +27,14 @@ DEFAULT_USER="default"
 DEFAULT_PASSWORD="clickhouse123"
 MAX_RETRIES=3
 
+# 从环境变量获取配置
+CLICKHOUSE_CONTAINER_NAME=${CLICKHOUSE_CONTAINER_NAME:-clickhouse-server}
+CLICKHOUSE_HTTP_PORT=${CLICKHOUSE_HTTP_PORT:-8123}
+CLICKHOUSE_NATIVE_PORT=${CLICKHOUSE_NATIVE_PORT:-9000}
+
 echo "=== ClickHouse Docker 服务监控 ==="
 echo "监控时间: $(date)"
+echo "容器名称: $CLICKHOUSE_CONTAINER_NAME"
 echo ""
 
 # 加载配置文件
@@ -77,7 +90,7 @@ check_service_status() {
 check_connection() {
     local retries=0
     while [ $retries -lt $MAX_RETRIES ]; do
-        if $COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+        if $COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
             -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
             --query "SELECT 1" > /dev/null 2>&1; then
             log_message "SUCCESS" "数据库连接正常"
@@ -96,28 +109,28 @@ check_connection() {
 # 获取性能指标
 get_performance_metrics() {
     # 查询数量
-    local query_count=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local query_count=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT count() FROM system.query_log WHERE event_time >= now() - INTERVAL 1 HOUR" \
         2>/dev/null || echo "0")
     
     # 慢查询数量
-    local slow_query_count=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local slow_query_count=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT count() FROM system.query_log WHERE event_time >= now() - INTERVAL 1 HOUR AND query_duration_ms > 1000" \
         2>/dev/null || echo "0")
     
     # 连接数
-    local connection_count=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local connection_count=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT count() FROM system.processes" \
         2>/dev/null || echo "0")
     
     # 错误数量
-    local error_count=$($COMPOSE_CMD logs clickhouse-server 2>&1 | grep -c "ERROR\|Exception" || echo "0")
+    local error_count=$($COMPOSE_CMD logs $CLICKHOUSE_CONTAINER_NAME 2>&1 | grep -c "ERROR\|Exception" || echo "0")
     
     # 内存使用率
-    local memory_usage=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local memory_usage=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "
         SELECT 
@@ -169,7 +182,7 @@ get_performance_metrics() {
     if [ "$error_count" -gt 0 ]; then
         echo ""
         echo "⚠ 最近错误日志:"
-        $COMPOSE_CMD logs clickhouse-server 2>&1 | grep "ERROR\|Exception" | tail -5
+        $COMPOSE_CMD logs $CLICKHOUSE_CONTAINER_NAME 2>&1 | grep "ERROR\|Exception" | tail -5
     fi
     
     return 0
@@ -182,13 +195,13 @@ get_resource_usage() {
     
     # 容器资源使用
     echo "容器资源使用:"
-    $COMPOSE_CMD exec clickhouse-server cat /proc/meminfo | grep -E "MemTotal|MemAvailable|MemUsed" || \
+    $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME cat /proc/meminfo | grep -E "MemTotal|MemAvailable|MemUsed" || \
         log_message "WARNING" "无法获取内存信息"
     
     # ClickHouse内存使用详情
     echo ""
     echo "ClickHouse内存使用详情:"
-    $COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    $COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "
         SELECT 
@@ -223,7 +236,7 @@ get_resource_usage() {
     # 磁盘使用
     echo ""
     echo "磁盘使用情况:"
-    $COMPOSE_CMD exec clickhouse-server df -h /var/lib/clickhouse/ || \
+    $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME df -h /var/lib/clickhouse/ || \
         log_message "WARNING" "无法获取磁盘使用信息"
     
     return 0
@@ -234,7 +247,7 @@ get_query_statistics() {
     echo ""
     echo "=== 查询统计 ==="
     
-    $COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    $COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "
         SELECT 
@@ -282,7 +295,7 @@ get_table_information() {
     echo ""
     echo "=== 表信息 ==="
     
-    $COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    $COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "
         SELECT 

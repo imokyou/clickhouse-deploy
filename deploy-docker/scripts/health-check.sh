@@ -6,6 +6,14 @@
 
 set -e
 
+# 加载环境变量
+if [ -f ".env" ]; then
+    echo "加载环境配置文件..."
+    set -a
+    source .env
+    set +a
+fi
+
 # 配置参数
 CONFIG_FILE="health-check.conf"
 LOG_FILE="/tmp/clickhouse-health-check.log"
@@ -18,8 +26,16 @@ DEFAULT_PASSWORD="clickhouse123"
 HEALTH_CHECK_TIMEOUT=30
 MAX_RETRIES=3
 
+# 从环境变量获取配置
+CLICKHOUSE_CONTAINER_NAME=${CLICKHOUSE_CONTAINER_NAME:-clickhouse-server}
+CLICKHOUSE_HTTP_PORT=${CLICKHOUSE_HTTP_PORT:-8123}
+CLICKHOUSE_NATIVE_PORT=${CLICKHOUSE_NATIVE_PORT:-9000}
+
 echo "=== ClickHouse Docker 健康检查 ==="
 echo "检查时间: $(date)"
+echo "容器名称: $CLICKHOUSE_CONTAINER_NAME"
+echo "HTTP端口: $CLICKHOUSE_HTTP_PORT"
+echo "Native端口: $CLICKHOUSE_NATIVE_PORT"
 echo ""
 
 # 加载配置文件
@@ -101,7 +117,7 @@ check_container_health() {
         log_message "SUCCESS" "容器健康状态正常"
     elif echo "$health_status" | grep -q "unhealthy"; then
         log_message "ERROR" "容器健康状态异常"
-        $COMPOSE_CMD logs clickhouse-server --tail=20
+        $COMPOSE_CMD logs $CLICKHOUSE_CONTAINER_NAME --tail=20
         return 1
     else
         log_message "WARNING" "容器健康状态未知"
@@ -116,7 +132,7 @@ check_database_connection() {
     
     local retries=0
     while [ $retries -lt $MAX_RETRIES ]; do
-        if $COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+        if $COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
             -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
             --query "SELECT 1" > /dev/null 2>&1; then
             log_message "SUCCESS" "数据库连接正常"
@@ -130,7 +146,7 @@ check_database_connection() {
     
     log_message "ERROR" "数据库连接失败，已尝试$MAX_RETRIES次"
     log_message "ERROR" "检查服务日志..."
-    $COMPOSE_CMD logs clickhouse-server --tail=20
+    $COMPOSE_CMD logs $CLICKHOUSE_CONTAINER_NAME --tail=20
     return 1
 }
 
@@ -138,7 +154,7 @@ check_database_connection() {
 check_version() {
     log_message "INFO" "检查ClickHouse版本..."
     
-    local version=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local version=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT version()" 2>/dev/null)
     
@@ -156,33 +172,33 @@ check_performance_metrics() {
     log_message "INFO" "检查性能指标..."
     
     # 查询数量
-    local query_count=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local query_count=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT count() FROM system.query_log WHERE event_time >= now() - INTERVAL 1 HOUR" \
         2>/dev/null || echo "0")
     log_message "INFO" "过去1小时查询次数: $query_count"
     
     # 慢查询数量
-    local slow_query_count=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local slow_query_count=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT count() FROM system.query_log WHERE event_time >= now() - INTERVAL 1 HOUR AND query_duration_ms > 1000" \
         2>/dev/null || echo "0")
     log_message "INFO" "过去1小时慢查询次数 (>1s): $slow_query_count"
     
     # 连接数
-    local connection_count=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local connection_count=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT count() FROM system.processes" \
         2>/dev/null || echo "0")
     log_message "INFO" "当前连接数: $connection_count"
     
     # 错误数量
-    local error_count=$($COMPOSE_CMD logs clickhouse-server 2>&1 | grep -c "ERROR\|Exception" || echo "0")
+    local error_count=$($COMPOSE_CMD logs $CLICKHOUSE_CONTAINER_NAME 2>&1 | grep -c "ERROR\|Exception" || echo "0")
     log_message "INFO" "错误日志数量: $error_count"
     
     if [ "$error_count" -gt 0 ]; then
         log_message "WARNING" "最近错误日志:"
-        $COMPOSE_CMD logs clickhouse-server 2>&1 | grep "ERROR\|Exception" | tail -5
+        $COMPOSE_CMD logs $CLICKHOUSE_CONTAINER_NAME 2>&1 | grep "ERROR\|Exception" | tail -5
     fi
     
     return 0
@@ -194,12 +210,12 @@ check_resource_usage() {
     
     # 容器资源使用
     log_message "INFO" "容器资源使用情况:"
-    $COMPOSE_CMD exec clickhouse-server cat /proc/meminfo | grep -E "MemTotal|MemAvailable|MemUsed" || \
+    $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME cat /proc/meminfo | grep -E "MemTotal|MemAvailable|MemUsed" || \
         log_message "WARNING" "无法获取内存信息"
     
     # ClickHouse内存使用
     log_message "INFO" "ClickHouse内存使用:"
-    $COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    $COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "
         SELECT 
@@ -211,7 +227,7 @@ check_resource_usage() {
     
     # 磁盘使用
     log_message "INFO" "磁盘使用情况:"
-    $COMPOSE_CMD exec clickhouse-server df -h /var/lib/clickhouse/ || \
+    $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME df -h /var/lib/clickhouse/ || \
         log_message "WARNING" "无法获取磁盘使用信息"
     
     return 0
@@ -226,32 +242,32 @@ check_network_connectivity() {
     local native_port=0
     
     # 方法1: 尝试使用 netstat
-    if $COMPOSE_CMD exec clickhouse-server which netstat >/dev/null 2>&1; then
-        http_port=$($COMPOSE_CMD exec clickhouse-server netstat -tlnp 2>/dev/null | grep -c ":8123 " || echo "0")
-        native_port=$($COMPOSE_CMD exec clickhouse-server netstat -tlnp 2>/dev/null | grep -c ":9000 " || echo "0")
+    if $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME which netstat >/dev/null 2>&1; then
+        http_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME netstat -tlnp 2>/dev/null | grep -c ":$CLICKHOUSE_HTTP_PORT " || echo "0")
+        native_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME netstat -tlnp 2>/dev/null | grep -c ":$CLICKHOUSE_NATIVE_PORT " || echo "0")
     # 方法2: 尝试使用 ss (socket statistics)
-    elif $COMPOSE_CMD exec clickhouse-server which ss >/dev/null 2>&1; then
-        http_port=$($COMPOSE_CMD exec clickhouse-server ss -tlnp 2>/dev/null | grep -c ":8123 " || echo "0")
-        native_port=$($COMPOSE_CMD exec clickhouse-server ss -tlnp 2>/dev/null | grep -c ":9000 " || echo "0")
+    elif $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME which ss >/dev/null 2>&1; then
+        http_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME ss -tlnp 2>/dev/null | grep -c ":$CLICKHOUSE_HTTP_PORT " || echo "0")
+        native_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME ss -tlnp 2>/dev/null | grep -c ":$CLICKHOUSE_NATIVE_PORT " || echo "0")
     # 方法3: 检查 /proc/net/tcp
-    elif $COMPOSE_CMD exec clickhouse-server test -f /proc/net/tcp; then
-        http_port=$($COMPOSE_CMD exec clickhouse-server cat /proc/net/tcp 2>/dev/null | grep -c ":1F9B " || echo "0")  # 8123 in hex
-        native_port=$($COMPOSE_CMD exec clickhouse-server cat /proc/net/tcp 2>/dev/null | grep -c ":2328 " || echo "0")  # 9000 in hex
+    elif $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME test -f /proc/net/tcp; then
+        http_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME cat /proc/net/tcp 2>/dev/null | grep -c ":1F9B " || echo "0")  # 8123 in hex
+        native_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME cat /proc/net/tcp 2>/dev/null | grep -c ":2328 " || echo "0")  # 9000 in hex
     # 方法4: 使用 lsof
-    elif $COMPOSE_CMD exec clickhouse-server which lsof >/dev/null 2>&1; then
-        http_port=$($COMPOSE_CMD exec clickhouse-server lsof -i :8123 2>/dev/null | wc -l || echo "0")
-        native_port=$($COMPOSE_CMD exec clickhouse-server lsof -i :9000 2>/dev/null | wc -l || echo "0")
+    elif $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME which lsof >/dev/null 2>&1; then
+        http_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME lsof -i :$CLICKHOUSE_HTTP_PORT 2>/dev/null | wc -l || echo "0")
+        native_port=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME lsof -i :$CLICKHOUSE_NATIVE_PORT 2>/dev/null | wc -l || echo "0")
     # 方法5: 通过 ClickHouse 系统表检查
     else
         log_message "WARNING" "无法使用系统工具检查端口，尝试通过 ClickHouse 系统表检查"
         # 通过 ClickHouse 查询检查端口状态
-        local http_check=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+        local http_check=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
             -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
-            --query "SELECT count() FROM system.processes WHERE query LIKE '%8123%'" \
+            --query "SELECT count() FROM system.processes WHERE query LIKE '%$CLICKHOUSE_HTTP_PORT%'" \
             2>/dev/null || echo "0")
-        local native_check=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+        local native_check=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
             -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
-            --query "SELECT count() FROM system.processes WHERE query LIKE '%9000%'" \
+            --query "SELECT count() FROM system.processes WHERE query LIKE '%$CLICKHOUSE_NATIVE_PORT%'" \
             2>/dev/null || echo "0")
         
         # 如果无法通过系统表检查，则假设端口正常（因为连接已经建立）
@@ -268,37 +284,37 @@ check_network_connectivity() {
     
     # 检查 HTTP 端口
     if [ "$http_port" -gt 0 ] 2>/dev/null; then
-        log_message "SUCCESS" "HTTP端口(8123)监听正常"
+        log_message "SUCCESS" "HTTP端口($CLICKHOUSE_HTTP_PORT)监听正常"
     else
-        log_message "ERROR" "HTTP端口(8123)未监听"
+        log_message "ERROR" "HTTP端口($CLICKHOUSE_HTTP_PORT)未监听"
     fi
     
     # 检查 Native 端口
     if [ "$native_port" -gt 0 ] 2>/dev/null; then
-        log_message "SUCCESS" "Native端口(9000)监听正常"
+        log_message "SUCCESS" "Native端口($CLICKHOUSE_NATIVE_PORT)监听正常"
     else
-        log_message "ERROR" "Native端口(9000)未监听"
+        log_message "ERROR" "Native端口($CLICKHOUSE_NATIVE_PORT)未监听"
     fi
     
     # 额外检查：尝试从容器外部连接端口
     log_message "INFO" "检查外部端口连接性..."
     
     # 获取容器IP
-    local container_ip=$($COMPOSE_CMD exec clickhouse-server hostname -i 2>/dev/null | awk '{print $1}' || echo "")
+    local container_ip=$($COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME hostname -i 2>/dev/null | awk '{print $1}' || echo "")
     
     if [ -n "$container_ip" ]; then
         # 检查 HTTP 端口连接
-        if timeout 5 bash -c "</dev/tcp/$container_ip/8123" 2>/dev/null; then
-            log_message "SUCCESS" "HTTP端口(8123)外部连接正常"
+        if timeout 5 bash -c "</dev/tcp/$container_ip/$CLICKHOUSE_HTTP_PORT" 2>/dev/null; then
+            log_message "SUCCESS" "HTTP端口($CLICKHOUSE_HTTP_PORT)外部连接正常"
         else
-            log_message "WARNING" "HTTP端口(8123)外部连接失败"
+            log_message "WARNING" "HTTP端口($CLICKHOUSE_HTTP_PORT)外部连接失败"
         fi
         
         # 检查 Native 端口连接
-        if timeout 5 bash -c "</dev/tcp/$container_ip/9000" 2>/dev/null; then
-            log_message "SUCCESS" "Native端口(9000)外部连接正常"
+        if timeout 5 bash -c "</dev/tcp/$container_ip/$CLICKHOUSE_NATIVE_PORT" 2>/dev/null; then
+            log_message "SUCCESS" "Native端口($CLICKHOUSE_NATIVE_PORT)外部连接正常"
         else
-            log_message "WARNING" "Native端口(9000)外部连接失败"
+            log_message "WARNING" "Native端口($CLICKHOUSE_NATIVE_PORT)外部连接失败"
         fi
     else
         log_message "WARNING" "无法获取容器IP地址"
@@ -311,7 +327,7 @@ check_network_connectivity() {
 check_system_tables() {
     log_message "INFO" "检查系统表..."
     
-    local table_count=$($COMPOSE_CMD exec -T clickhouse-server clickhouse-client \
+    local table_count=$($COMPOSE_CMD exec -T $CLICKHOUSE_CONTAINER_NAME clickhouse-client \
         -u "$DEFAULT_USER" --password "$DEFAULT_PASSWORD" \
         --query "SELECT count() FROM system.tables" \
         2>/dev/null || echo "0")

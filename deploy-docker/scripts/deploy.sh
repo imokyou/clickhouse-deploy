@@ -7,6 +7,24 @@ set -e
 
 echo "=== ClickHouse Docker 完整部署 ==="
 
+# 加载环境变量
+if [ -f ".env" ]; then
+    echo "加载环境配置文件..."
+    set -a
+    source .env
+    set +a
+fi
+
+# 从环境变量获取配置
+CLICKHOUSE_CONTAINER_NAME=${CLICKHOUSE_CONTAINER_NAME:-clickhouse-server}
+CLICKHOUSE_HTTP_PORT=${CLICKHOUSE_HTTP_PORT:-8123}
+CLICKHOUSE_NATIVE_PORT=${CLICKHOUSE_NATIVE_PORT:-9000}
+
+echo "容器名称: $CLICKHOUSE_CONTAINER_NAME"
+echo "HTTP端口: $CLICKHOUSE_HTTP_PORT"
+echo "Native端口: $CLICKHOUSE_NATIVE_PORT"
+echo ""
+
 # 检查Docker环境
 echo "1. 检查Docker环境..."
 if ! command -v docker &> /dev/null; then
@@ -74,7 +92,7 @@ $COMPOSE_CMD ps
 # 等待服务完全启动
 echo "8. 等待服务完全启动..."
 for i in {1..12}; do
-    if curl -s http://localhost:8123/ping > /dev/null; then
+    if curl -s http://localhost:$CLICKHOUSE_HTTP_PORT/ping > /dev/null; then
         echo "✓ ClickHouse服务已启动"
         break
     else
@@ -84,17 +102,17 @@ for i in {1..12}; do
 done
 
 # 测试连接
-echo "9. 测试 ClickHouse 连接... $COMPOSE_CMD exec clickhouse-server clickhouse-client --query"
-if $COMPOSE_CMD exec clickhouse-server clickhouse-client -u default --password clickhouse123 --query "SELECT version()" > /dev/null 2>&1; then
+echo "9. 测试 ClickHouse 连接... $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME clickhouse-client --query"
+if $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME clickhouse-client -u default --password clickhouse123 --query "SELECT version()" > /dev/null 2>&1; then
     echo "✓ ClickHouse连接测试成功"
 else
     echo "⚠ ClickHouse连接测试失败，请检查日志"
-    $COMPOSE_CMD logs clickhouse
+    $COMPOSE_CMD logs $CLICKHOUSE_CONTAINER_NAME
 fi
 
 # 创建测试数据库和表
-echo "10. 创建测试数据... $COMPOSE_CMD exec clickhouse-server clickhouse-client --query"
-$COMPOSE_CMD exec clickhouse-server clickhouse-client -u default --password clickhouse123 --query "
+echo "10. 创建测试数据... $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME clickhouse-client --query"
+$COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME clickhouse-client -u default --password clickhouse123 --query "
 CREATE DATABASE IF NOT EXISTS test_db;
 CREATE TABLE IF NOT EXISTS test_db.test_table (
     id UInt32,
@@ -108,14 +126,14 @@ ORDER BY (id, created_at);
 echo ""
 echo "=== 部署完成 ==="
 echo "ClickHouse 服务已启动"
-echo "HTTP端口: http://localhost:8123"
-echo "Native端口: localhost:9000"
+echo "HTTP端口: http://localhost:$CLICKHOUSE_HTTP_PORT"
+echo "Native端口: localhost:$CLICKHOUSE_NATIVE_PORT"
 echo "默认用户: default"
 echo "默认密码: clickhouse123"
 echo ""
 echo "常用命令:"
 echo "  查看服务状态: $COMPOSE_CMD ps"
-echo "  查看日志: $COMPOSE_CMD logs -f clickhouse-server"
-echo "  连接数据库: $COMPOSE_CMD exec clickhouse-server clickhouse-client -u default --password clickhouse123"
+echo "  查看日志: $COMPOSE_CMD logs -f $CLICKHOUSE_CONTAINER_NAME"
+echo "  连接数据库: $COMPOSE_CMD exec $CLICKHOUSE_CONTAINER_NAME clickhouse-client -u default --password clickhouse123"
 echo "  健康检查: ./scripts/health-check.sh"
 echo "  备份数据: ./scripts/backup.sh" 
